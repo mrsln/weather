@@ -1,14 +1,17 @@
-import React      from 'react';
-import { render } from 'react-dom';
-import App        from './App';
+import React           from 'react';
+import { render }      from 'react-dom';
+import App             from './App';
+import { createStore } from 'redux';
+import { Provider }    from 'react-redux';
+import cityApp         from './reducers';
 
-const tiles = [
-	{
-		city: 'Perm'
-	},
-	{
-		city: 'Auckland'
-	}
-];
+let store = createStore(cityApp);
 
-render(<App tiles={tiles} />, document.getElementById('root'));
+let rootElement = document.getElementById('root');
+
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  rootElement
+);
