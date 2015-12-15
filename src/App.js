@@ -4,20 +4,25 @@ import { addCity } from './actions';
 import { connect } from 'react-redux';
 
 class App extends Component {
+  
+  componentDidMount() {
+    this.props.dispatch(addCity('Perm'));
+  }
+
   render() {
-  const {dispatch, cities} = this.props;
-  return (
-    <div>
-      <h1>Weather</h1>
+    const {dispatch, cities} = this.props;
+    return (
+      <div>
+        <h1>Weather</h1>
 
-      <Tiles
-        cities = {cities} />
+        <Tiles
+          cities = {cities} />
 
-      <button
-        onClick = {() => dispatch(addCity({name: "Perm", temperature: -1}))}
-      >+</button>
-    </div>
-  );
+        <button
+          onClick = {() => dispatch(addCity('Moscow'))}
+        >+</button>
+      </div>
+    );
   }
 }
 
