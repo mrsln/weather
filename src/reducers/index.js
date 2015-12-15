@@ -2,7 +2,6 @@ import { combineReducers }        from 'redux';
 import { INIT_CITY, UPDATE_CITY } from '../actions';
 
 function cities(state = [], action) {
-
 	switch (action.type) {
 		case INIT_CITY:
 			return [

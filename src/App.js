@@ -6,7 +6,17 @@ import { connect } from 'react-redux';
 class App extends Component {
   
   componentDidMount() {
-    this.props.dispatch(addCity('Perm'));
+    if (!this.props.cities.length) {
+      if (localStorage.cities) {
+        localStorage.cities.split(',').forEach(city => this.props.dispatch(addCity(city)));
+      } else {
+        this.props.dispatch(addCity('Perm'));
+      }
+    }
+
+    window.addEventListener('beforeunload', () => {
+      localStorage.cities = this.props.cities.map(city => city.name);
+    });
   }
 
   render() {
