@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect }          from 'react-redux';
+
+import { addCity, addCityByLocation } from './actions';
+
 import Tiles from './components/Tiles';
-import { addCity } from './actions';
-import { connect } from 'react-redux';
 
 class App extends Component {
   
@@ -10,7 +12,11 @@ class App extends Component {
       if (localStorage.cities) {
         localStorage.cities.split(',').forEach(city => this.props.dispatch(addCity(city)));
       } else {
-        this.props.dispatch(addCity('Perm'));
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            this.props.dispatch(addCityByLocation(position.coords.latitude, position.coords.longitude));
+          }
+        );
       }
     }
 
