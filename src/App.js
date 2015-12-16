@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect }          from 'react-redux';
 
-import { addCity, addCityByLocation } from './actions';
+import { addCity, addCityByLocation, addCityById } from './actions';
 
 import Tiles from './components/Tiles';
 
@@ -10,7 +10,7 @@ class App extends Component {
   componentDidMount() {
     if (!this.props.cities.length) {
       if (localStorage.cities) {
-        localStorage.cities.split(',').forEach(city => this.props.dispatch(addCity(city)));
+        localStorage.cities.split(',').forEach(cityId => this.props.dispatch(addCityById(cityId)));
       } else {
         navigator.geolocation.getCurrentPosition(
           position => {
@@ -21,7 +21,7 @@ class App extends Component {
     }
 
     window.addEventListener('beforeunload', () => {
-      localStorage.cities = this.props.cities.map(city => city.name);
+      localStorage.cities = this.props.cities.map(city => city.id);
     });
   }
 

@@ -9,12 +9,13 @@ function cities(state = [], action) {
 				{
 					name: action.city,
 					temperature: '*',
+					id: 0,
 				}
 			];
 		case UPSERT_CITY:
 			let found = false;
 			let newState = state.map(city => {
-				if (city.name === action.city.name) {
+				if (city.id === action.city.id) {
 					city.temperature = action.city.temperature;
 					found = true;
 				}
