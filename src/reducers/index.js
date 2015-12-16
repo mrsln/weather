@@ -1,5 +1,6 @@
-import { combineReducers }        from 'redux';
-import { INIT_CITY, UPSERT_CITY } from '../actions';
+import { combineReducers } from 'redux';
+
+import { INIT_CITY, UPSERT_CITY, ERROR, RESET_ERROR, resetError } from '../actions';
 
 function cities(state = [], action) {
 	switch (action.type) {
@@ -30,8 +31,26 @@ function cities(state = [], action) {
 	}
 }
 
+function err(state = {}, action) {
+	switch (action.type) {
+		case ERROR:
+			return {
+				err: true,
+				errMessage: action.message,
+			}
+		case RESET_ERROR:
+			return {
+				err: false,
+				errMessage: '',
+			}
+		default:
+			return state;
+	}
+}
+
 const cityApp = combineReducers({
 	cities,
+	err,
 });
 
 export default cityApp;

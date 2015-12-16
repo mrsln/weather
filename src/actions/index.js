@@ -1,10 +1,14 @@
 export const INIT_CITY   = 'INIT_CITY';
 export const UPSERT_CITY = 'UPSERT_CITY';
+export const ERROR       = 'ERROR';
+export const RESET_ERROR = 'RESET_ERROR';
 
 const API_KEY = 'ec7ff474e2549898d7e4ff07b645fe29';
-const makeApiUrl    =  city      => `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ru&APPID=${API_KEY}`;
-const makeGeoApiUrl = (lat, lon) => `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=ru&APPID=${API_KEY}`;
-const makeUrlById   =  id        => `http://api.openweathermap.org/data/2.5/weather?id=${id}&units=metric&lang=ru&APPID=${API_KEY}`;
+const API_URL = 'http://api.openweathermap.org/data/2.5/weather';
+const API_COMMON_PARAMS = `units=metric&lang=ru&APPID=${API_KEY}`
+const makeApiUrl    =  city      => `${API_URL}?q=${city}&${API_COMMON_PARAMS}`;
+const makeGeoApiUrl = (lat, lon) => `${API_URL}?lat=${lat}&lon=${lon}&${API_COMMON_PARAMS}`;
+const makeUrlById   =  id        => `${API_URL}?id=${id}&${API_COMMON_PARAMS}`;
 
 export function addCity(city) {
 	return dispatch => {
@@ -41,6 +45,13 @@ export function initCity(city) {
 }
 
 export function updsertCity(json) {
+	if (json.cod !== 200) {
+		return {
+			type: ERROR,
+			message: json.message,
+		};
+	}
+
 	const city = {
 		name: json.name,
 		temperature: json.main.temp,
@@ -49,5 +60,11 @@ export function updsertCity(json) {
 	return {
 		type: UPSERT_CITY,
 		city
+	};
+}
+
+export function resetError() {
+	return {
+		type: RESET_ERROR,
 	};
 }
