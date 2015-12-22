@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { connect }          from 'react-redux';
 
-import { addCity, addCityByLocation, addCityById, resetError } from './actions';
+import { addCity, addCityByLocation, addCityById, searchCity, resetError } from './actions';
 
 import Tiles   from './components/Tiles';
 import AddCity from './components/AddCity';
@@ -20,9 +20,8 @@ class App extends Component {
       } else {
         // init with the user's current location
         navigator.geolocation.getCurrentPosition(
-          position => {
-            this.props.dispatch(addCityByLocation(position.coords.latitude, position.coords.longitude));
-          }
+          position =>
+            this.props.dispatch(addCityByLocation(position.coords.latitude, position.coords.longitude))
         );
       }
     }
@@ -31,6 +30,12 @@ class App extends Component {
     window.addEventListener('beforeunload', () => {
       localStorage.cities = this.props.cities.map(city => city.id);
     });
+
+    setTimeout(this.updateWeather.bind(this), 3600);
+  }
+
+  updateWeather() {
+    this.props.cities.forEach(city => this.props.dispatch(addCityById(city.id)));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -39,14 +44,30 @@ class App extends Component {
     }
   }
 
+  selectAndSearch_(e) {
+    const cityName = e.value;
+    this.props.dispatch(addCity(cityName));
+  }
+
+  onKeywordsChange(e, keywords) {
+    this.props.dispatch(searchCity(keywords));
+  }
+
   render() {
-    const {dispatch, cities, err} = this.props;
+    const {dispatch, cities, err, cityList} = this.props;
     return (
       <div>
         <h1>Weather</h1>
+        
         <Err     err    = {err}    />
         <Tiles   cities = {cities} />
-        <AddCity onAdd  = { id => dispatch(addCityById(id)) } />
+        
+        <AddCity
+          cityList      = {cityList}
+          onInputSelect = {this.selectAndSearch_.bind(this)}
+          onInputChange = {this.onKeywordsChange.bind(this)}
+        />
+
       </div>
     );
   }
@@ -54,8 +75,9 @@ class App extends Component {
 
 function select(state) {
   return {
-    cities: state.cities,
-    err:    state.err
+    cities:   state.cities,
+    err:      state.err,
+    cityList: state.cityList,
   };
 }
 

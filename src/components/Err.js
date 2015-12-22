@@ -1,4 +1,4 @@
-// a component for showing the las error
+// a component for showing a last error
 
 import React, { Component } from 'react';
 
