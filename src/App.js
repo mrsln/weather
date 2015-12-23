@@ -3,7 +3,15 @@
 import React, { Component } from 'react';
 import { connect }          from 'react-redux';
 
-import { addCity, addCityByLocation, addCityById, searchCity, resetError } from './actions';
+import {
+  addCity,
+  addCityByLocation,
+  addCityById,
+  searchCity,
+  setCityList,
+  resetError,
+  deleteCity,
+} from './actions';
 
 import Tiles   from './components/Tiles';
 import AddCity from './components/AddCity';
@@ -44,13 +52,17 @@ class App extends Component {
     }
   }
 
-  selectAndSearch_(e) {
-    const cityName = e.value;
-    this.props.dispatch(addCity(cityName));
+  onCitySelected(e, city) {
+    this.props.dispatch(setCityList([]));
+    this.props.dispatch(addCity(city.name + ', ' + city.country));
   }
 
   onKeywordsChange(e, keywords) {
     this.props.dispatch(searchCity(keywords));
+  }
+
+  onCitytDelete(i) {
+    this.props.dispatch(deleteCity(i));
   }
 
   render() {
@@ -59,12 +71,16 @@ class App extends Component {
       <div>
         <h1>Weather</h1>
         
-        <Err     err    = {err}    />
-        <Tiles   cities = {cities} />
+        <Err err = {err} />
+
+        <Tiles
+          cities   = {cities}
+          onDelete = {this.onCitytDelete.bind(this)}
+        />
         
         <AddCity
           cityList      = {cityList}
-          onInputSelect = {this.selectAndSearch_.bind(this)}
+          onInputSelect = {this.onCitySelected.bind(this)}
           onInputChange = {this.onKeywordsChange.bind(this)}
         />
 

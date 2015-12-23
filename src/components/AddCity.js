@@ -34,13 +34,13 @@ export default class AddCity extends Component {
                     items      = {this.props.cityList}
                     getItemValue={item => item.name + ', ' + item.country}
                     onChange   = {this.props.onInputChange}
-                    onSelect   = {this.props.onInputSelected}
-                    renderItem = { (item, isHighlighted) => (
+                    onSelect   = {this.props.onInputSelect}
+                    renderItem = { (item, isHighlighted) =>
                         <div
                           style = {isHighlighted ? styles.highlightedItem : styles.item}
-                          key   = {'auto' + item.name}
+                          key   = {'auto' + item.name + item.country + item.lat}
                         >{item.name + ', ' + item.country}</div>
-                    )}
+                    }
                 />
             </div>
         );

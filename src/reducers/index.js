@@ -7,6 +7,7 @@ import {
 	RESET_ERROR,
 	SET_CITY_LIST,
 	resetError,
+	DELETE_CITY,
 } from '../actions';
 
 function cities(state = [], action) {
@@ -25,6 +26,8 @@ function cities(state = [], action) {
 				newState.push(action.city);
 			}
 			return newState;
+		case DELETE_CITY:
+			return state.filter( (city, i) => i !== action.i );
 		default:
 			return state;
 	}

@@ -1,5 +1,5 @@
-export const INIT_CITY     = 'INIT_CITY';
 export const UPSERT_CITY   = 'UPSERT_CITY';
+export const DELETE_CITY   = 'DELETE_CITY';
 export const ERROR         = 'ERROR';
 export const RESET_ERROR   = 'RESET_ERROR';
 export const SET_CITY_LIST = 'SET_CITY_LIST';
@@ -20,7 +20,7 @@ export function addCity(city) {
 		// dispatch(initCity(city));
 		return fetch(makeApiUrl(city))
 			.then(response => response.json())
-			.then(json     => dispatch(upsertCity(json)))
+			.then(json     => dispatch(upsertCity(json, city)))
 	};
 }
 
@@ -42,25 +42,36 @@ export function addCityById(id) {
 	};
 }
 
+export function deleteCity(i) {
+	return {
+		type: DELETE_CITY,
+		i,
+	};
+}
+
 // get a list of cities with the `input` in their names
 export function searchCity(snippet) {
 	return dispatch => {
 		return fetch(makePlacesApiUrl(snippet))
 			.then(response => response.json())
-			.then(json     => dispatch(setCityList(json)))
+			.then(json     => dispatch(setCityListFromJson(json)))
 	}
 }
 
 // got the list of cities for the snippet
-export function setCityList(json) {
-	if (!json.geonames) return;
+export function setCityListFromJson(json) {
+	if (!json.geonames) return setCityList([]);
 
 	// creating an array of strings like ['Saint-Petersburg, Russia']
 	const list = json.geonames.map( city => ({name: city.name, country: city.countryName}) );
+	return setCityList(list);
+}
+
+export function setCityList(list) {
 	return {
 		type: SET_CITY_LIST,
 		list,
-	}
+	};
 }
 
 // insert or update a city with the json from API
