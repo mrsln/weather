@@ -63,7 +63,7 @@ export function setCityListFromJson(json) {
 	if (!json.geonames) return setCityList([]);
 
 	// creating an array of strings like ['Saint-Petersburg, Russia']
-	const list = json.geonames.map( city => ({name: city.name, country: city.countryName}) );
+	const list = json.geonames.map( city => ({name: city.name, country: city.countryName, id: city.geonameId}) );
 	return setCityList(list);
 }
 
@@ -85,7 +85,7 @@ export function upsertCity(json) {
 
 	const city = {
 		name:        json.name,
-		temperature: json.main.temp,
+		temperature: Math.round(json.main.temp),
 		id:          json.id,
 	};
 	return {

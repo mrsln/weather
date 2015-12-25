@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import Tile from './Tile';
 
+const style = {
+  root: {
+    display: 'flex',
+    width: '100%',
+    height: '100%',
+    position: 'fixed',
+  },
+};
+
 export default class Tiles extends Component {
   
   static propTypes = {
@@ -14,7 +23,7 @@ export default class Tiles extends Component {
     );
     
     return (
-      <div>
+      <div style={style.root}>
         {tiles}
       </div>
     );

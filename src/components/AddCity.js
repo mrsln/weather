@@ -6,10 +6,6 @@ import Autocomplete         from 'react-autocomplete';
 
 export default class AddCity extends Component {
 
-    handleSelectName() {
-
-    }
-
     render() {
         let styles = {
           item: {
@@ -29,7 +25,7 @@ export default class AddCity extends Component {
           }
         };
         return (
-            <div>
+            <div style={{position: 'fixed'}}>
                 <Autocomplete
                     items      = {this.props.cityList}
                     getItemValue={item => item.name + ', ' + item.country}
@@ -38,7 +34,7 @@ export default class AddCity extends Component {
                     renderItem = { (item, isHighlighted) =>
                         <div
                           style = {isHighlighted ? styles.highlightedItem : styles.item}
-                          key   = {'auto' + item.name + item.country + item.lat}
+                          key   = {'auto' + item.id}
                         >{item.name + ', ' + item.country}</div>
                     }
                 />

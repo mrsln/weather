@@ -69,8 +69,6 @@ class App extends Component {
     const {dispatch, cities, err, cityList} = this.props;
     return (
       <div>
-        <h1>Weather</h1>
-        
         <Err err = {err} />
 
         <Tiles
@@ -78,11 +76,11 @@ class App extends Component {
           onDelete = {this.onCitytDelete.bind(this)}
         />
         
-        <AddCity
-          cityList      = {cityList}
-          onInputSelect = {this.onCitySelected.bind(this)}
-          onInputChange = {this.onKeywordsChange.bind(this)}
-        />
+        {/*<AddCity
+                  cityList      = {cityList}
+                  onInputSelect = {this.onCitySelected.bind(this)}
+                  onInputChange = {this.onKeywordsChange.bind(this)}
+                />*/}
 
       </div>
     );
