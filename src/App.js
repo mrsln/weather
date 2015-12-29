@@ -16,6 +16,8 @@ import {
 import Tiles   from './components/Tiles';
 import AddCity from './components/AddCity';
 import Err     from './components/Err';
+import Header  from './components/Header';
+import Body    from './components/Body';
 
 class App extends Component {
   
@@ -71,16 +73,20 @@ class App extends Component {
       <div>
         <Err err = {err} />
 
-        <Tiles
-          cities   = {cities}
-          onDelete = {this.onCitytDelete.bind(this)}
-        />
-        
-        {/*<AddCity
-                  cityList      = {cityList}
-                  onInputSelect = {this.onCitySelected.bind(this)}
-                  onInputChange = {this.onKeywordsChange.bind(this)}
-                />*/}
+        <Header>
+          <AddCity
+            cityList      = {cityList}
+            onInputSelect = {this.onCitySelected.bind(this)}
+            onInputChange = {this.onKeywordsChange.bind(this)}
+          />
+        </Header>
+
+        <Body>
+          <Tiles
+            cities   = {cities}
+            onDelete = {this.onCitytDelete.bind(this)}
+          />
+        </Body>
 
       </div>
     );
