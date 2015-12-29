@@ -4,7 +4,6 @@ const style = {
   root: {
     display: 'flex',
     width: '100%',
-    maxWidth: 500,
     height: '100%',
     border: 'solid',
     borderRadius: 5,
@@ -52,11 +51,22 @@ export default class Tile extends Component {
         margin: 5,
         padding: 20,
         position: 'relative',
-        verticalAlign: 'middle',
+        justifyContent: 'center',
         display: 'flex',
         flexGrow: 1,
         flexBasis: 150,
-      }
+        flexDirection: 'column',
+        alignItems: 'center',
+      },
+      temp: {
+        fontSize: '3em',
+      },
+      city: {
+        fontSize: '2em',
+      },
+      content: {
+        textAlign: 'center',
+      },
     };
     
     if (this.state.minusHovered) {
@@ -77,8 +87,15 @@ export default class Tile extends Component {
 
 		return (
 			<div style={style.root}>
-				
-        {this.props.city.name}: {this.props.city.temperature}
+				<div style={style.content}>
+          <div style={style.temp}>
+            {this.props.city.temperature}
+          </div>
+
+          <div style={style.city}>
+            {this.props.city.name}
+          </div>
+        </div>
 
         {delBtn}
 

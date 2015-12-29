@@ -33,12 +33,12 @@ export function addCityByLocation(lat, lon) {
 	};
 }
 
-export function addCityById(id) {
+export function addCityById(id, name) {
 	return dispatch => {
 		// TODO: loader
 		return fetch(makeUrlById(id))
 			.then(response => response.json())
-			.then(json     => dispatch(upsertCity(json)))
+			.then(json     => dispatch(upsertCity(json, name)))
 	};
 }
 
@@ -75,7 +75,7 @@ export function setCityList(list) {
 }
 
 // insert or update a city with the json from API
-export function upsertCity(json) {
+export function upsertCity(json, forceName) {
 	if (json.cod !== 200) {
 		return {
 			type: ERROR,
@@ -84,7 +84,7 @@ export function upsertCity(json) {
 	}
 
 	const city = {
-		name:        json.name,
+		name:        forceName ? forceName : json.name,
 		temperature: Math.round(json.main.temp),
 		id:          json.id,
 	};

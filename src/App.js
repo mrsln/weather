@@ -26,7 +26,8 @@ class App extends Component {
 
       if (localStorage.cities) {
         // loading from the storage
-        localStorage.cities.split(',').forEach(cityId => this.props.dispatch(addCityById(cityId)));
+        const cities = JSON.parse(localStorage.cities);
+        cities.forEach(city => this.props.dispatch(addCityById(city.id, city.name)));
       } else {
         // init with the user's current location
         navigator.geolocation.getCurrentPosition(
@@ -38,7 +39,8 @@ class App extends Component {
 
     // saving user's city to the storage before closing the app
     window.addEventListener('beforeunload', () => {
-      localStorage.cities = this.props.cities.map(city => city.id);
+      const cities = this.props.cities.map( city => ({id: city.id, name: city.name}) );
+      localStorage.cities = JSON.stringify(cities);
     });
 
     setTimeout(this.updateWeather.bind(this), 3600);
