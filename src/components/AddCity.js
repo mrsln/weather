@@ -34,7 +34,7 @@ export default class AddCity extends Component {
                     renderItem = { (item, isHighlighted) =>
                         <div
                           style = {isHighlighted ? styles.highlightedItem : styles.item}
-                          key   = {'auto' + item.placeId}
+                          key   = {'auto' + item.PlaceId}
                         >{item.Description}</div>
                     }
                 />
