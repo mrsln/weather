@@ -62,7 +62,12 @@ class App extends Component {
   }
 
   onKeywordsChange(e, keywords) {
-    this.props.dispatch(searchCity(keywords));
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const location = position.coords.latitude + ',' + position.coords.longitude;
+        this.props.dispatch(searchCity(keywords, location));
+      }
+    );
   }
 
   onCitytDelete(i) {
