@@ -58,10 +58,12 @@ class App extends Component {
 
   onCitySelected(e, city) {
     this.props.dispatch(setCityList([]));
-    this.props.dispatch(addCity(city.name + ', ' + city.country));
+    this.props.dispatch(addCityByLocation(city.Location.Lat, city.Location.Lng, city.Description));
   }
 
   onKeywordsChange(e, keywords) {
+    if (!keywords || !keywords.length) return;
+
     navigator.geolocation.getCurrentPosition(
       position => {
         const location = position.coords.latitude + ',' + position.coords.longitude;

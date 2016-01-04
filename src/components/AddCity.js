@@ -28,14 +28,14 @@ export default class AddCity extends Component {
             <div style={{position: 'fixed'}}>
                 <Autocomplete
                     items      = {this.props.cityList}
-                    getItemValue={item => item.name + ', ' + item.country}
+                    getItemValue={item => item.Description}
                     onChange   = {this.props.onInputChange}
                     onSelect   = {this.props.onInputSelect}
                     renderItem = { (item, isHighlighted) =>
                         <div
                           style = {isHighlighted ? styles.highlightedItem : styles.item}
-                          key   = {'auto' + item.id}
-                        >{item.name + ', ' + item.country}</div>
+                          key   = {'auto' + item.placeId}
+                        >{item.Description}</div>
                     }
                 />
             </div>

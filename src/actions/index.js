@@ -24,12 +24,12 @@ export function addCity(city) {
   };
 }
 
-export function addCityByLocation(lat, lon) {
+export function addCityByLocation(lat, lon, name) {
   return dispatch => {
     // TODO: show a loading gif. dispatch(initGeoCity());, upsertCity => updateGeoCity
     return fetch(makeGeoApiUrl(lat, lon))
       .then(response => response.json())
-      .then(json     => dispatch(upsertCity(json)))
+      .then(json     => dispatch(upsertCity(json, name)))
   };
 }
 
@@ -60,9 +60,8 @@ export function searchCity(snippet, location) {
 
 // got the list of cities for the snippet
 export function setCityListFromJson(json) {
-  if (!json.predictions) return setCityList([]);
-  const list = json.predictions.map( city => ({name: city.terms[0].value, country: city.terms[2].value, id: city.place_id}) );
-  return setCityList(list);
+  if (!json) return setCityList([]);
+  return setCityList(json);
 }
 
 export function setCityList(list) {
