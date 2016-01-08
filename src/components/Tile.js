@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
 
-const style = {
-  root: {
-    display: 'flex',
-    width: '100%',
-    height: '100%',
-    border: 'solid',
-    borderRadius: 5,
-  },
-};
-
 export default class Tile extends Component {
 
   static propTypes = {
@@ -57,6 +47,7 @@ export default class Tile extends Component {
         flexBasis: 150,
         flexDirection: 'column',
         alignItems: 'center',
+        minWidth: 200,
       },
       temp: {
         fontSize: '3em',
