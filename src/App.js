@@ -11,6 +11,7 @@ import {
   setCityList,
   resetError,
   deleteCity,
+  addMyCity,
 } from './actions';
 
 import Tiles   from './components/Tiles';
@@ -32,7 +33,7 @@ class App extends Component {
         // init with the user's current location
         navigator.geolocation.getCurrentPosition(
           position =>
-            this.props.dispatch(addCityByLocation(position.coords.latitude, position.coords.longitude))
+            this.props.dispatch(addMyCity(position.coords.latitude, position.coords.longitude))
         );
       }
     }

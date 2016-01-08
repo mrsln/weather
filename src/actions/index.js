@@ -1,3 +1,5 @@
+import fetch from 'isomorphic-fetch';
+
 export const UPSERT_CITY   = 'UPSERT_CITY';
 export const DELETE_CITY   = 'DELETE_CITY';
 export const ERROR         = 'ERROR';
@@ -8,11 +10,14 @@ const API_KEY = 'ec7ff474e2549898d7e4ff07b645fe29';
 const API_URL = 'http://api.openweathermap.org/data/2.5/weather';
 const API_COMMON_PARAMS = `units=metric&lang=ru&APPID=${API_KEY}`
 const makeApiUrl    =  city      => `${API_URL}?q=${city}&${API_COMMON_PARAMS}`;
-const makeGeoApiUrl = (lat, lon) => `${API_URL}?lat=${lat}&lon=${lon}&${API_COMMON_PARAMS}`;
+const makeGeoApiUrl = (lat, lng) => `${API_URL}?lat=${lat}&lon=${lng}&${API_COMMON_PARAMS}`;
 const makeUrlById   =  id        => `${API_URL}?id=${id}&${API_COMMON_PARAMS}`;
 
 const PLACES_URL = 'http://cities-api.herokuapp.com/city';
 const makePlacesApiUrl = (snippet, location) => `${PLACES_URL}?input=${encodeURIComponent(snippet)}&location=${location}`;
+
+const MY_CITY_URL = 'http://cities-api.herokuapp.com/mycity';
+const makeMyCityApiUrl = (lat, lng) => `${MY_CITY_URL}?lat=${lat}&lng=${lng}`;
 
 // add a city by a name
 export function addCity(city) {
@@ -24,10 +29,9 @@ export function addCity(city) {
   };
 }
 
-export function addCityByLocation(lat, lon, name) {
+export function addCityByLocation(lat, lng, name) {
   return dispatch => {
-    // TODO: show a loading gif. dispatch(initGeoCity());, upsertCity => updateGeoCity
-    return fetch(makeGeoApiUrl(lat, lon))
+    return fetch(makeGeoApiUrl(lat, lng))
       .then(response => response.json())
       .then(json     => dispatch(upsertCity(json, name)))
   };
@@ -47,6 +51,14 @@ export function deleteCity(i) {
     type: DELETE_CITY,
     i,
   };
+}
+
+export function addMyCity(lat, lng) {
+  return dispatch => {
+    return fetch(makeMyCityApiUrl(lat, lng))
+      .then(response => response.json())
+      .then(json => dispatch(addCityByLocation(json.Location.Lat, json.Location.Lng, json.Description)))
+  }
 }
 
 // get a list of cities with the `input` in their names
