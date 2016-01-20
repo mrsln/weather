@@ -25,7 +25,7 @@ export default class AddCity extends Component {
           }
         };
         return (
-            <div style={{position: 'fixed'}}>
+            <div style={{position: 'fixed', zIndex: 1}}>
                 <Autocomplete
                     items      = {this.props.cityList}
                     getItemValue={item => item.Description}
