@@ -38,13 +38,12 @@ class App extends Component {
       }
     }
 
-    // saving user's city to the storage before closing the app
-    window.addEventListener('beforeunload', () => {
-      const cities = this.props.cities.map( city => ({id: city.id, name: city.name}) );
-      localStorage.cities = JSON.stringify(cities);
-    });
-
     setTimeout(this.updateWeather.bind(this), 3600);
+  }
+
+  saveCities(cities) {
+    if (!cities) cities = [];
+    localStorage.cities = JSON.stringify(cities);
   }
 
   updateWeather() {
@@ -54,6 +53,9 @@ class App extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.err && nextProps.err.err) {
       setTimeout(() => this.props.dispatch(resetError()), 3000);
+    }
+    if (this.props.cities !== nextProps.cities) {
+      this.saveCities(nextProps.cities);
     }
   }
 
