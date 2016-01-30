@@ -14,13 +14,20 @@ import {
   addMyCity,
 } from './actions';
 
-import Tiles   from './components/Tiles';
-import AddCity from './components/AddCity';
-import Err     from './components/Err';
-import Header  from './components/Header';
-import Body    from './components/Body';
+import Tiles   from './components/tiles';
+import AddCity from './components/add-city';
+import Err     from './components/err';
+import Header  from './components/header';
+import Body    from './components/body';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      adding: false,
+    };
+  }
   
   componentDidMount() {
     if (!this.props.cities.length) {
@@ -59,12 +66,14 @@ class App extends Component {
     }
   }
 
-  onCitySelected(e, city) {
+  onCitySelected = (cityIndex) => {
+    this.setState({adding: false});
+    let city = this.props.cityList[cityIndex];
     this.props.dispatch(setCityList([]));
     this.props.dispatch(addCityByLocation(city.Location.Lat, city.Location.Lng, city.Description));
   }
 
-  onKeywordsChange(e, keywords) {
+  onKeywordsChange = (keywords) => {
     if (!keywords || !keywords.length) return;
 
     navigator.geolocation.getCurrentPosition(
@@ -75,28 +84,41 @@ class App extends Component {
     );
   }
 
-  onCitytDelete(i) {
+  onCitytDelete = (i) => {
     this.props.dispatch(deleteCity(i));
   }
 
   render() {
     const {dispatch, cities, err, cityList} = this.props;
+    
+    let suggestions = cityList.map(city => city.Description);
+
     return (
       <div>
         <Err err = {err} />
 
         <Header>
-          <AddCity
-            cityList      = {cityList}
-            onInputSelect = {this.onCitySelected.bind(this)}
-            onInputChange = {this.onKeywordsChange.bind(this)}
-          />
+          <button
+            style={{
+              padding: 5,
+              cursor: 'pointer',
+            }}
+            onClick = { e => this.setState({adding: !this.state.adding}) }
+          >
+            Add a city
+          </button>
         </Header>
 
         <Body>
           <Tiles
-            cities   = {cities}
-            onDelete = {this.onCitytDelete.bind(this)}
+            cities     = {cities}
+            onDelete   = {this.onCitytDelete}
+            adding     = {this.state.adding}
+            stopAdding = { e => this.setState({adding: false}) }
+
+            items    = {suggestions}
+            onSelect = {this.onCitySelected}
+            onChange = {this.onKeywordsChange}
           />
         </Body>
 

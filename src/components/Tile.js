@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Autocomplete         from './autocomplete';
 
 export default class Tile extends Component {
 
@@ -6,23 +7,66 @@ export default class Tile extends Component {
     city: React.PropTypes.shape({
       name: React.PropTypes.string.isRequired,
       temperature: React.PropTypes.number.isRequired
-    }).isRequired,
+    }),
+
     onDelete: React.PropTypes.func,
+    adding: React.PropTypes.bool,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       minusHovered: false, // doesn't feel like a prop
+      tileHovered: false,
     };
   }
 
-  onHover() {
+  onMinusHover = () => {
     this.setState({minusHovered: true});
   }
 
-  offHover() {
+  offMinusHover = () => {
     this.setState({minusHovered: false});
+  }
+
+  onRootHover = () => {
+    this.setState({tileHovered: true});
+  }
+
+  offRootHover = () => {
+    this.setState({tileHovered: false});
+  }
+
+  renderCity() {
+    let style = {
+      temp: {
+        fontSize: '3em',
+      },
+      city: {
+        fontSize: '2em',
+      },
+      region: {
+        color: 'gray',
+      },
+    };
+    let city = this.props.city.name.split(',').slice(0, 1).join();
+    let region = this.props.city.name.split(',').slice(1).join();
+    return (
+      <div>
+        <div style={style.temp}>
+          {this.props.city.temperature > 0 ? '+' : ''}
+          {this.props.city.temperature}
+        </div>
+
+        <div style={style.city}>
+          {city}
+        </div>
+
+        <div style={style.region}>
+          {region}
+        </div>
+      </div>
+    );
   }
 
 	render() {
@@ -34,9 +78,12 @@ export default class Tile extends Component {
         position: 'absolute',
         right: 5,
         top: 5,
+        display: this.state.tileHovered ? 'block' : 'none',
+        backgroundColor: this.state.minusHovered ? 'lightgray' : 'transparent',
       },
       root: {
-        border: '1px solid gray',
+        border: this.state.tileHovered ? '1px solid gray' : 'none',
+        boxSizing: 'border-box',
         borderRadius: 5,
         margin: 5,
         padding: 20,
@@ -49,43 +96,39 @@ export default class Tile extends Component {
         alignItems: 'center',
         minWidth: 200,
       },
-      temp: {
-        fontSize: '3em',
-      },
-      city: {
-        fontSize: '2em',
-      },
       content: {
         textAlign: 'center',
       },
     };
-    
-    if (this.state.minusHovered) {
-      style.minus.backgroundColor = 'lightgray';
-    }
 
     let delBtn = null;
     if (typeof this.props.onDelete === 'function') {
       delBtn = (
         <span
           style        = {style.minus}
-          onMouseEnter = {this.onHover.bind(this)}
-          onMouseLeave = {this.offHover.bind(this)}
+          onMouseEnter = {this.onMinusHover}
+          onMouseLeave = {this.offMinusHover}
           onClick      = {this.props.onDelete}
         >X</span>
       );
     }
 
 		return (
-			<div style={style.root}>
+			<div
+        style = {style.root}
+        onMouseEnter = {this.onRootHover}
+        onMouseLeave = {this.offRootHover}
+      >
 				<div style={style.content}>
-          <div style={style.temp}>
-            {this.props.city.temperature}
-          </div>
-
-          <div style={style.city}>
-            {this.props.city.name}
-          </div>
+          {
+            this.props.adding ?
+              <Autocomplete
+                items    = {this.props.items}
+                onSelect = {this.props.onSelect}
+                onChange = {this.props.onChange}
+              />
+              : this.renderCity()
+          }
         </div>
 
         {delBtn}
