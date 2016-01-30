@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Tile from './Tile';
+import Tile from './tile';
 
 const style = {
   root: {
@@ -13,7 +13,14 @@ const style = {
 export default class Tiles extends Component {
   
   static propTypes = {
-    onDelete: React.PropTypes.func,
+    onDelete:   React.PropTypes.func,
+    adding:     React.PropTypes.bool,
+    cities:     React.PropTypes.array,
+
+    stopAdding: React.PropTypes.func,
+    items: React.PropTypes.arrayOf(React.PropTypes.string),
+    onSelect: React.PropTypes.func,
+    onChange: React.PropTypes.func,
   }
 
   render() {
@@ -25,6 +32,19 @@ export default class Tiles extends Component {
     return (
       <div style={style.root}>
         {tiles}
+        {
+          this.props.adding ?
+            <Tile
+              key      = 'adding'
+              adding   = {true}
+              onDelete = {this.props.stopAdding}
+
+              items    = {this.props.items}
+              onSelect = {this.props.onSelect}
+              onChange = {this.props.onChange}
+            />
+            : null
+        }
       </div>
     );
   }
