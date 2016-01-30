@@ -14,15 +14,24 @@ export default class Tile extends Component {
     super(props);
     this.state = {
       minusHovered: false, // doesn't feel like a prop
+      tileHovered: false,
     };
   }
 
-  onHover() {
+  onMinusHover = () => {
     this.setState({minusHovered: true});
   }
 
-  offHover() {
+  offMinusHover = () => {
     this.setState({minusHovered: false});
+  }
+
+  onRootHover = () => {
+    this.setState({tileHovered: true});
+  }
+
+  offRootHover = () => {
+    this.setState({tileHovered: false});
   }
 
 	render() {
@@ -34,9 +43,10 @@ export default class Tile extends Component {
         position: 'absolute',
         right: 5,
         top: 5,
+        display: this.state.tileHovered ? 'block' : 'none',
       },
       root: {
-        border: '1px solid gray',
+        border: this.state.tileHovered ? '1px solid gray' : 'none',
         borderRadius: 5,
         margin: 5,
         padding: 20,
@@ -55,6 +65,9 @@ export default class Tile extends Component {
       city: {
         fontSize: '2em',
       },
+      region: {
+        color: 'gray',
+      },
       content: {
         textAlign: 'center',
       },
@@ -69,22 +82,34 @@ export default class Tile extends Component {
       delBtn = (
         <span
           style        = {style.minus}
-          onMouseEnter = {this.onHover.bind(this)}
-          onMouseLeave = {this.offHover.bind(this)}
+          onMouseEnter = {this.onMinusHover}
+          onMouseLeave = {this.offMinuxHover}
           onClick      = {this.props.onDelete}
         >X</span>
       );
     }
 
+    let city = this.props.city.name.split(',').slice(0, 1).join();
+    let region = this.props.city.name.split(',').slice(1).join();
+
 		return (
-			<div style={style.root}>
+			<div
+          style = {style.root}
+          onMouseEnter = {this.onRootHover}
+          onMouseLeave = {this.offRootHover}
+        >
 				<div style={style.content}>
           <div style={style.temp}>
+            {this.props.city.temperature > 0 ? '+' : ''}
             {this.props.city.temperature}
           </div>
 
           <div style={style.city}>
-            {this.props.city.name}
+            {city}
+          </div>
+
+          <div style={style.region}>
+            {region}
           </div>
         </div>
 
