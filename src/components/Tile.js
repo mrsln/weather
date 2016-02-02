@@ -11,6 +11,7 @@ export default class Tile extends Component {
 
     onDelete: React.PropTypes.func,
     adding: React.PropTypes.bool,
+    editing: React.PropTypes.bool,
   }
 
   constructor(props) {
@@ -70,7 +71,7 @@ export default class Tile extends Component {
   }
 
 	render() {
-    
+    let editing = this.state.tileHovered || this.props.editing;
     let style = {
       minus: {
         padding: '0 5px',
@@ -78,11 +79,11 @@ export default class Tile extends Component {
         position: 'absolute',
         right: 5,
         top: 5,
-        display: this.state.tileHovered ? 'block' : 'none',
+        display: editing ? 'block' : 'none',
         backgroundColor: this.state.minusHovered ? 'lightgray' : 'transparent',
       },
       root: {
-        border: this.state.tileHovered ? '1px solid gray' : 'none',
+        border: editing ? '1px solid gray' : 'none',
         boxSizing: 'border-box',
         borderRadius: 5,
         margin: 5,

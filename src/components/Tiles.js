@@ -15,6 +15,7 @@ export default class Tiles extends Component {
   static propTypes = {
     onDelete:   React.PropTypes.func,
     adding:     React.PropTypes.bool,
+    editing:    React.PropTypes.bool,
     cities:     React.PropTypes.array,
 
     stopAdding: React.PropTypes.func,
@@ -26,7 +27,12 @@ export default class Tiles extends Component {
   render() {
     const tiles = this.props.cities.map(
       (city, i) =>
-        <Tile key={'tile_' + i} city={city} onDelete={this.props.onDelete.bind(this, i)} />
+        <Tile
+          key      = {'tile_' + i}
+          city     = {city}
+          onDelete = {this.props.onDelete.bind(this, i)}
+          editing  = {this.props.editing}
+        />
     );
     
     return (

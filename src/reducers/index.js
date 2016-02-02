@@ -8,6 +8,9 @@ import {
 	SET_CITY_LIST,
 	resetError,
 	DELETE_CITY,
+	DEFAULT_MODE,
+	ADDING_MODE,
+	EDITING_MODE,
 } from '../actions';
 
 function cities(state = [], action) {
@@ -60,10 +63,18 @@ function err(state = {}, action) {
 	}
 }
 
+function mode(state = DEFAULT_MODE, action) {
+	if ([ADDING_MODE, EDITING_MODE, DEFAULT_MODE].indexOf(action.type) > -1) {
+		return action.type;
+	}
+	return state;
+}
+
 const cityApp = combineReducers({
 	cities,
 	err,
 	cityList,
+	mode,
 });
 
 export default cityApp;

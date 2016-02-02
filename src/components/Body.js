@@ -5,7 +5,7 @@ export default class Body extends Component {
     const style = {
       display: 'flex',
       width: '100%',
-      height: 'calc(100% - 40px)', // FIX: this hackery must be fixed
+      height: 'calc(100% - 62px)', // FIX: this hackery must be fixed
       position: 'fixed',
     };
 

@@ -12,6 +12,12 @@ import {
   resetError,
   deleteCity,
   addMyCity,
+  setMode,
+  toggleAddingMode,
+  DEFAULT_MODE,
+  ADDING_MODE,
+  EDITING_MODE,
+  toggleEditingMode,
 } from './actions';
 
 import Tiles   from './components/tiles';
@@ -20,13 +26,13 @@ import Err     from './components/err';
 import Header  from './components/header';
 import Body    from './components/body';
 
+import Button from './components/button';
+import Logo from './components/logo';
+
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      adding: false,
-    };
   }
   
   componentDidMount() {
@@ -67,7 +73,7 @@ class App extends Component {
   }
 
   onCitySelected = (cityIndex) => {
-    this.setState({adding: false});
+    this.props.dispatch(setMode(DEFAULT_MODE));
     let city = this.props.cityList[cityIndex];
     this.props.dispatch(setCityList([]));
     this.props.dispatch(addCityByLocation(city.Location.Lat, city.Location.Lng, city.Description));
@@ -88,6 +94,14 @@ class App extends Component {
     this.props.dispatch(deleteCity(i));
   }
 
+  toggleAddingMode = () => {
+    this.props.dispatch(toggleAddingMode(this.props.mode));
+  }
+
+  toggleEditingMode = () => {
+    this.props.dispatch(toggleEditingMode(this.props.mode))
+  }
+
   render() {
     const {dispatch, cities, err, cityList} = this.props;
     
@@ -98,27 +112,30 @@ class App extends Component {
         <Err err = {err} />
 
         <Header>
-          <button
-            style={{
-              padding: 5,
-              cursor: 'pointer',
-            }}
-            onClick = { e => this.setState({adding: !this.state.adding}) }
+          <Logo/>
+          
+          <Button
+            onClick = {this.toggleAddingMode}
           >
-            Add a city
-          </button>
+            {this.props.mode === ADDING_MODE ? 'Done' : 'Add'}
+          </Button>
+          <Button
+            onClick = {this.toggleEditingMode}
+          >
+            {this.props.mode === EDITING_MODE ? 'Done' : 'Delete'}
+          </Button>
         </Header>
 
         <Body>
           <Tiles
             cities     = {cities}
             onDelete   = {this.onCitytDelete}
-            adding     = {this.state.adding}
-            stopAdding = { e => this.setState({adding: false}) }
-
-            items    = {suggestions}
-            onSelect = {this.onCitySelected}
-            onChange = {this.onKeywordsChange}
+            adding     = {this.props.mode === ADDING_MODE}
+            editing    = {this.props.mode === EDITING_MODE}
+            stopAdding = {this.toggleAddingMode}
+            items      = {suggestions}
+            onSelect   = {this.onCitySelected}
+            onChange   = {this.onKeywordsChange}
           />
         </Body>
 
@@ -132,6 +149,7 @@ function select(state) {
     cities:   state.cities,
     err:      state.err,
     cityList: state.cityList,
+    mode:     state.mode,
   };
 }
 

@@ -108,3 +108,28 @@ export function resetError() {
     type: RESET_ERROR,
   };
 }
+
+export const ADDING_MODE = 'ADDING_MODE';
+export const EDITING_MODE = 'EDITING_MODE';
+export const DEFAULT_MODE = 'DEFAULT_MODE';
+export function setMode(mode) {
+  return {
+    type: mode,
+  };
+}
+
+export function toggleAddingMode(curMode) {
+  let newMode = ADDING_MODE;
+  if (curMode === ADDING_MODE) {
+    newMode = DEFAULT_MODE;
+  }
+  return setMode(newMode);
+}
+
+export function toggleEditingMode(curMode) {
+  let newMode = EDITING_MODE;
+  if (curMode === EDITING_MODE) {
+    newMode = DEFAULT_MODE;
+  }
+  return setMode(newMode);
+}
