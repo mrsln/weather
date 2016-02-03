@@ -83,10 +83,8 @@ export default class Tile extends Component {
         backgroundColor: this.state.minusHovered ? 'lightgray' : 'transparent',
       },
       root: {
-        border: editing ? '1px solid gray' : 'none',
+        border: editing ? '1px solid rgba(0,0,0,.06)' : 'none',
         boxSizing: 'border-box',
-        borderRadius: 5,
-        margin: 5,
         padding: 20,
         position: 'relative',
         justifyContent: 'center',
@@ -96,6 +94,8 @@ export default class Tile extends Component {
         flexDirection: 'column',
         alignItems: 'center',
         minWidth: 200,
+        zIndex: 1,
+        marginTop: -1,
       },
       content: {
         textAlign: 'center',

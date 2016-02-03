@@ -5,11 +5,12 @@ export default class Header extends Component {
     const style = {
       height: 50,
       padding: 5,
-      margin: 5,
-      borderBottom: '2px solid lightgray',
+      borderBottom: '1px solid rgba(0,0,0,.06)',
       display: 'flex',
       alignItems: 'center',
       textAlign: 'center',
+      zIndex: 5,
+      boxSizing: 'border-box',
     };
 
     return (
