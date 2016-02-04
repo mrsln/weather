@@ -107,6 +107,17 @@ class App extends Component {
     
     let suggestions = cityList.map(city => city.Description);
 
+    let style = {
+      fork: {
+        right: 15,
+        top: 15,
+        position: 'absolute',
+      },
+      forka: {
+        textDecoration: 'none',
+      },
+    };
+
     return (
       <div>
         <Err err = {err} />
@@ -124,6 +135,10 @@ class App extends Component {
           >
             {this.props.mode === EDITING_MODE ? 'Done' : 'Delete'}
           </Button>
+
+          <div style={style.fork}>
+            <a style={style.forka} href="https://github.com/mrsln/weather">Fork it!</a>
+          </div>
         </Header>
 
         <Body>
