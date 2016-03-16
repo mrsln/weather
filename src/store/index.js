@@ -2,8 +2,6 @@ import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import cityApp from '../reducers';
 
-let store = createStore(cityApp);
-
 const createStoreWithMiddleware = applyMiddleware(
   thunkMiddleware
 )(createStore)

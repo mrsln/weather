@@ -24,7 +24,15 @@ export function addCity(city) {
   return dispatch => {
     // dispatch(initCity(city));
     return fetch(makeApiUrl(city))
-      .then(response => response.json())
+      .then(response => {
+        if (response.status >= 400) {
+          setTimeout( () => {
+            dispatch(addCity(city));
+          } , 1000);
+          throw new Error(response.statusText)
+        }
+        return response.json()
+      })
       .then(json     => dispatch(upsertCity(json, city)))
   };
 }
@@ -32,7 +40,15 @@ export function addCity(city) {
 export function addCityByLocation(lat, lng, name) {
   return dispatch => {
     return fetch(makeGeoApiUrl(lat, lng))
-      .then(response => response.json())
+      .then(response => {
+        if (response.status >= 400) {
+          setTimeout( () => {
+            dispatch(addCityByLocation(lat, lng, name));
+          } , 1000);
+          throw new Error(response.statusText)
+        }
+        return response.json()
+      })
       .then(json     => dispatch(upsertCity(json, name)))
   };
 }
@@ -41,7 +57,15 @@ export function addCityById(id, name) {
   return dispatch => {
     // TODO: loader
     return fetch(makeUrlById(id))
-      .then(response => response.json())
+      .then(response => {
+        if (response.status >= 400) {
+          setTimeout( () => {
+            dispatch(addCityById(id, name));
+          } , 1000);
+          throw new Error(response.statusText)
+        }
+        return response.json()
+      })
       .then(json     => dispatch(upsertCity(json, name)))
   };
 }
@@ -56,7 +80,15 @@ export function deleteCity(i) {
 export function addMyCity(lat, lng) {
   return dispatch => {
     return fetch(makeMyCityApiUrl(lat, lng))
-      .then(response => response.json())
+      .then(response => {
+        if (response.status >= 400) {
+          setTimeout( () => {
+            dispatch(addMyCity(lat, lng));
+          } , 1000);
+          throw new Error(response.statusText)
+        }
+        return response.json()
+      })
       .then(json => dispatch(addCityByLocation(json.Location.Lat, json.Location.Lng, json.Description)))
   }
 }

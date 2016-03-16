@@ -70,7 +70,7 @@ export default class Tile extends Component {
     );
   }
 
-	render() {
+  render() {
     let editing = this.state.tileHovered || this.props.editing;
     let style = {
       minus: {
@@ -114,13 +114,13 @@ export default class Tile extends Component {
       );
     }
 
-		return (
-			<div
+    return (
+      <div
         style = {style.root}
         onMouseEnter = {this.onRootHover}
         onMouseLeave = {this.offRootHover}
       >
-				<div style={style.content}>
+        <div style={style.content}>
           {
             this.props.adding ?
               <Autocomplete
@@ -134,7 +134,7 @@ export default class Tile extends Component {
 
         {delBtn}
 
-			</div>
-		);
-	}
+      </div>
+    );
+  }
 }
