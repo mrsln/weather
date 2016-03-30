@@ -53,14 +53,22 @@ export function addCityByLocation(lat, lng, name) {
   };
 }
 
-export function addCityById(id, name) {
+export function addCityById(id, name, temperature = 0) {
   return dispatch => {
+    dispatch({
+      type: UPSERT_CITY,
+      city: {
+        id,
+        name,
+        temperature,
+      }
+    });
     // TODO: loader
     return fetch(makeUrlById(id))
       .then(response => {
         if (response.status >= 400) {
           setTimeout( () => {
-            dispatch(addCityById(id, name));
+            dispatch(addCityById(id, name, temperature));
           } , 1000);
           throw new Error(response.statusText)
         }
