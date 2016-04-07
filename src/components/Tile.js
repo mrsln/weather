@@ -6,7 +6,8 @@ export default class Tile extends Component {
   static propTypes = {
     city: React.PropTypes.shape({
       name: React.PropTypes.string.isRequired,
-      temperature: React.PropTypes.number.isRequired
+      temperature: React.PropTypes.number.isRequired,
+      updated: React.PropTypes.number,
     }),
 
     onDelete: React.PropTypes.func,
@@ -50,8 +51,11 @@ export default class Tile extends Component {
         color: 'gray',
       },
     };
-    let city = this.props.city.name.split(',').slice(0, 1).join();
+    
+    // extracting city and region names. Everything before a comma is a city name.
+    let city   = this.props.city.name.split(',').slice(0, 1).join();
     let region = this.props.city.name.split(',').slice(1).join();
+
     return (
       <div>
         <div style={style.temp}>
@@ -70,8 +74,19 @@ export default class Tile extends Component {
     );
   }
 
+  renderAutocomplete() {
+    return (
+      <Autocomplete
+        items    = {this.props.items}
+        onSelect = {this.props.onSelect}
+        onChange = {this.props.onChange}
+      />
+    );
+  }
+
   render() {
     let editing = this.state.tileHovered || this.props.editing;
+
     let style = {
       minus: {
         padding: '0 5px',
@@ -96,6 +111,7 @@ export default class Tile extends Component {
         minWidth: 200,
         zIndex: 1,
         marginTop: -1,
+        color: (this.props.city.updated > 0 ? 'inherit' : 'gray'),
       },
       content: {
         textAlign: 'center',
@@ -122,13 +138,7 @@ export default class Tile extends Component {
       >
         <div style={style.content}>
           {
-            this.props.adding ?
-              <Autocomplete
-                items    = {this.props.items}
-                onSelect = {this.props.onSelect}
-                onChange = {this.props.onChange}
-              />
-              : this.renderCity()
+            this.props.adding ? this.renderAutocomplete() : this.renderCity()
           }
         </div>
 

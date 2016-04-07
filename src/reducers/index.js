@@ -17,17 +17,24 @@ function cities(state = [], action) {
 	switch (action.type) {
 		// insert the city or updates if it's already in the list
 		case UPSERT_CITY:
+			if (!action.city.hasOwnProperty('updated')) {
+				action.city.updated = Date.now()
+			}
+
 			let found = false;
 			let newState = state.map(city => {
 				if (city.id === action.city.id) {
 					city.temperature = action.city.temperature;
+					city.updated = action.city.updated;
 					found = true;
 				}
 				return city;
 			});
+
 			if (!found) {
 				newState.push(action.city);
 			}
+
 			return newState;
 		case DELETE_CITY:
 			return state.filter( (city, i) => i !== action.i );

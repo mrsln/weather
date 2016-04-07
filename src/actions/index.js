@@ -61,18 +61,22 @@ export function addCityById(id, name, temperature = 0) {
         id,
         name,
         temperature,
+        updated: 0,
       }
     });
     // TODO: loader
     return fetch(makeUrlById(id))
       .then(response => {
+
+        // have to repeat the request, because of the faulty API
         if (response.status >= 400) {
           setTimeout( () => {
             dispatch(addCityById(id, name, temperature));
           } , 1000);
           throw new Error(response.statusText)
         }
-        return response.json()
+
+        return response.json();
       })
       .then(json     => dispatch(upsertCity(json, name)))
   };
