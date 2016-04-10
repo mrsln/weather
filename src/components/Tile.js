@@ -139,6 +139,7 @@ export default class Tile extends Component {
       >
         <div style={style.content}>
           {
+            // TODO: must be 2 different components
             adding ? this.renderAutocomplete() : this.renderCity()
           }
         </div>
