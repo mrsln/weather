@@ -85,6 +85,7 @@ export default class Tile extends Component {
   }
 
   render() {
+    const { adding, onDelete, city } = this.props;
     let editing = this.state.tileHovered || this.props.editing;
 
     let style = {
@@ -111,7 +112,7 @@ export default class Tile extends Component {
         minWidth: 200,
         zIndex: 1,
         marginTop: -1,
-        color: (this.props.city.updated > 0 ? 'inherit' : 'gray'),
+        color: (!adding && city.updated > 0 ? 'inherit' : 'gray'),
       },
       content: {
         textAlign: 'center',
@@ -119,13 +120,13 @@ export default class Tile extends Component {
     };
 
     let delBtn = null;
-    if (typeof this.props.onDelete === 'function') {
+    if (typeof onDelete === 'function') {
       delBtn = (
         <span
           style        = {style.minus}
           onMouseEnter = {this.onMinusHover}
           onMouseLeave = {this.offMinusHover}
-          onClick      = {this.props.onDelete}
+          onClick      = {onDelete}
         >X</span>
       );
     }
@@ -138,7 +139,7 @@ export default class Tile extends Component {
       >
         <div style={style.content}>
           {
-            this.props.adding ? this.renderAutocomplete() : this.renderCity()
+            adding ? this.renderAutocomplete() : this.renderCity()
           }
         </div>
 

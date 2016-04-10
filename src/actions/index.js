@@ -29,9 +29,8 @@ export function addCity(city) {
           setTimeout( () => {
             dispatch(addCity(city));
           } , 1000);
-          throw new Error(response.statusText)
         }
-        return response.json()
+        return response.json();
       })
       .then(json     => dispatch(upsertCity(json, city)))
   };
@@ -45,9 +44,8 @@ export function addCityByLocation(lat, lng, name) {
           setTimeout( () => {
             dispatch(addCityByLocation(lat, lng, name));
           } , 1000);
-          throw new Error(response.statusText)
         }
-        return response.json()
+        return response.json();
       })
       .then(json     => dispatch(upsertCity(json, name)))
   };
@@ -73,9 +71,7 @@ export function addCityById(id, name, temperature = 0) {
           setTimeout( () => {
             dispatch(addCityById(id, name, temperature));
           } , 1000);
-          throw new Error(response.statusText)
         }
-
         return response.json();
       })
       .then(json     => dispatch(upsertCity(json, name)))
@@ -97,9 +93,8 @@ export function addMyCity(lat, lng) {
           setTimeout( () => {
             dispatch(addMyCity(lat, lng));
           } , 1000);
-          throw new Error(response.statusText)
         }
-        return response.json()
+        return response.json();
       })
       .then(json => dispatch(addCityByLocation(json.Location.Lat, json.Location.Lng, json.Description)))
   }
