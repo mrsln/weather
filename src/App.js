@@ -29,6 +29,8 @@ import Body    from './components/body';
 import Button from './components/button';
 import Logo from './components/logo';
 
+import { geoLocate } from './geolocation';
+
 class App extends Component {
 
   constructor(props) {
@@ -44,9 +46,8 @@ class App extends Component {
         cities.forEach(city => this.props.dispatch(addCityById(city.id, city.name, city.temperature)));
       } else {
         // init with the user's current location
-        navigator.geolocation.getCurrentPosition(
-          position =>
-            this.props.dispatch(addMyCity(position.coords.latitude, position.coords.longitude))
+        geoLocate(
+          (lat, lng) => this.props.dispatch(addMyCity(lat, lng))
         );
       }
     }
@@ -82,9 +83,9 @@ class App extends Component {
   onKeywordsChange = (keywords) => {
     if (!keywords || !keywords.length) return;
 
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        const location = position.coords.latitude + ',' + position.coords.longitude;
+    geoLocate(
+      (lat, lng) => {
+        const location = `${lat},${lng}`;
         this.props.dispatch(searchCity(keywords, location));
       }
     );
