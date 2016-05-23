@@ -43,12 +43,18 @@ export default class Tile extends Component {
     let style = {
       temp: {
         fontSize: '3em',
+        color: '#212121',
       },
       city: {
         fontSize: '2em',
+        color: '#727272',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
       },
       region: {
-        color: 'gray',
+        color: '#B6B6B6',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
       },
     };
     
@@ -97,6 +103,7 @@ export default class Tile extends Component {
         top: 5,
         display: editing ? 'block' : 'none',
         backgroundColor: this.state.minusHovered ? 'lightgray' : 'transparent',
+        color: '#727272',
       },
       root: {
         border: editing ? '1px solid rgba(0,0,0,.06)' : 'none',

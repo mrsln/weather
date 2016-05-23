@@ -11,6 +11,8 @@ export default class Button extends Component {
         cursor: 'pointer',
         display: 'flex',
         margin: '0 5px',
+        color: '#212121',
+        borderRadius: '2dp',
       }
     };
 

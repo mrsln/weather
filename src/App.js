@@ -116,11 +116,16 @@ class App extends Component {
       },
       forka: {
         textDecoration: 'none',
+        color: '#FF9800',
+      },
+      root: {
+        color: '#212121',
+        fontFamily: 'Roboto, Noto, sans-serif',
       },
     };
 
     return (
-      <div>
+      <div style={style.root}>
         <Err err = {err} />
 
         <Header>
