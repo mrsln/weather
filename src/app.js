@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { connect }          from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import {
   addCity,
@@ -43,11 +44,11 @@ class App extends Component {
       if (localStorage.cities) {
         // loading from the storage
         const cities = JSON.parse(localStorage.cities);
-        cities.forEach(city => this.props.dispatch(addCityById(city.id, city.name, city.temperature)));
+        cities.forEach(city => this.props.addCityById(city.id, city.name, city.temperature));
       } else {
         // init with the user's current location
         geoLocate(
-          (lat, lng) => this.props.dispatch(addMyCity(lat, lng))
+          (lat, lng) => this.props.addMyCity(lat, lng)
         );
       }
     }
@@ -61,12 +62,12 @@ class App extends Component {
   }
 
   updateWeather() {
-    this.props.cities.forEach(city => this.props.dispatch(addCityById(city.id)));
+    this.props.cities.forEach(city => this.props.addCityById(city.id));
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.err && nextProps.err.err) {
-      setTimeout(() => this.props.dispatch(resetError()), 3000);
+      setTimeout(() => this.props.resetError(), 3000);
     }
     if (this.props.cities !== nextProps.cities) {
       this.saveCities(nextProps.cities);
@@ -74,11 +75,11 @@ class App extends Component {
   }
 
   onCitySelected = (cityIndex) => {
-    this.props.dispatch(setMode(DEFAULT_MODE));
+    this.props.setMode(DEFAULT_MODE);
     let city = this.props.cityList[cityIndex];
-    this.props.dispatch(setCityList([]));
-    this.props.dispatch(addCityByLocation(city.Location.Lat, city.Location.Lng, city.Description));
-  }
+    this.props.setCityList([]);
+    this.props.addCityByLocation(city.Location.Lat, city.Location.Lng, city.Description);
+  };
 
   onKeywordsChange = (keywords) => {
     if (!keywords || !keywords.length) return;
@@ -86,25 +87,29 @@ class App extends Component {
     geoLocate(
       (lat, lng) => {
         const location = `${lat},${lng}`;
-        this.props.dispatch(searchCity(keywords, location));
+        this.props.searchCity(keywords, location);
       }
     );
   }
 
   onCitytDelete = (i) => {
-    this.props.dispatch(deleteCity(i));
+    this.props.deleteCity(i);
   }
 
   toggleAddingMode = () => {
-    this.props.dispatch(toggleAddingMode(this.props.mode));
+    this.props.toggleAddingMode(this.props.mode);
   }
 
   toggleEditingMode = () => {
-    this.props.dispatch(toggleEditingMode(this.props.mode))
+    this.props.toggleEditingMode(this.props.mode);
   }
 
   render() {
-    const {dispatch, cities, err, cityList} = this.props;
+    const {
+      cities,
+      err,
+      cityList
+    } = this.props;
     
     let suggestions = cityList.map(city => city.Description);
 
@@ -165,13 +170,27 @@ class App extends Component {
   }
 }
 
-function select(state) {
-  return {
-    cities:   state.cities,
-    err:      state.err,
-    cityList: state.cityList,
-    mode:     state.mode,
-  };
-}
-
-export default connect(select)(App)
+export default connect(
+  ({
+    cities,
+    err,
+    cityList,
+    mode,
+  }) => ({
+    cities,
+    err,
+    cityList,
+    mode,
+  }),
+  (dispatch) => ({
+    addCityById: bindActionCreators(addCityById, dispatch),
+    addMyCity: bindActionCreators(addMyCity, dispatch),
+    setMode: bindActionCreators(setMode, dispatch),
+    setCityList: bindActionCreators(setCityList, dispatch),
+    addCityByLocation: bindActionCreators(addCityByLocation, dispatch),
+    searchCity: bindActionCreators(searchCity, dispatch),
+    deleteCity: bindActionCreators(deleteCity, dispatch),
+    toggleAddingMode: bindActionCreators(toggleAddingMode, dispatch),
+    toggleEditingMode: bindActionCreators(toggleEditingMode, dispatch),
+  })
+)(App);
