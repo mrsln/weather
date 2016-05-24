@@ -42,19 +42,24 @@ export default class Tile extends Component {
   renderCity() {
     let style = {
       temp: {
-        fontSize: '3em',
+        fontSize: 56,
+        fontWeight: 400,
+        lineHeight: '64px',
         color: '#212121',
       },
       city: {
-        fontSize: '2em',
         color: '#727272',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
+        fontSize: 24,
+        lineHeight: '26px',
       },
       region: {
         color: '#B6B6B6',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
+        fontSize: 14,
+        lineHeight: '23px',
       },
     };
     

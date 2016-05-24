@@ -1,5 +1,3 @@
-"use strict";
-
 import React, {Component} from 'react';
 
 export default class Button extends Component {
@@ -8,6 +6,9 @@ export default class Button extends Component {
       root: {
         display: 'flex',
         marginRight: 50,
+        fontSize: 56,
+        fontWeight: 400,
+        lineHeight: '64px',
       }
     };
 

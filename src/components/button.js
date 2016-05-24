@@ -13,6 +13,8 @@ export default class Button extends Component {
         margin: '0 5px',
         color: '#212121',
         borderRadius: '2dp',
+        fontSize: 14,
+        textTransform: 'uppercase',
       }
     };
 

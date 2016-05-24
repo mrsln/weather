@@ -139,7 +139,7 @@ class App extends Component {
           <Button
             onClick = {this.toggleEditingMode}
           >
-            {this.props.mode === EDITING_MODE ? 'Done' : 'Delete'}
+            {this.props.mode === EDITING_MODE ? 'Done' : 'Edit'}
           </Button>
 
           <div style={style.fork}>
