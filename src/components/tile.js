@@ -96,7 +96,12 @@ export default class Tile extends Component {
   }
 
   render() {
-    const { adding, onDelete, city } = this.props;
+    const {
+      adding,
+      onDelete,
+      city,
+      width,
+    } = this.props;
     let editing = this.state.tileHovered || this.props.editing;
 
     let style = {
@@ -121,7 +126,7 @@ export default class Tile extends Component {
         flexBasis: 150,
         flexDirection: 'column',
         alignItems: 'center',
-        minWidth: 200,
+        minWidth: width,
         zIndex: 1,
         marginTop: -1,
         color: (!adding && city.updated > 0 ? 'inherit' : 'gray'),

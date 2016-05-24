@@ -25,29 +25,42 @@ export default class Tiles extends Component {
   }
 
   render() {
-    const tiles = this.props.cities.map(
+    const {
+      cities,
+      onDelete,
+      editing,
+      adding,
+      stopAdding,
+      items,
+      onSelect,
+      onChange,
+      width,
+    } = this.props;
+    
+    const tiles = cities.map(
       (city, i) =>
         <Tile
           key      = {'tile_' + i}
           city     = {city}
-          onDelete = {this.props.onDelete.bind(this, i)}
-          editing  = {this.props.editing}
+          onDelete = {onDelete.bind(this, i)}
+          editing  = {editing}
+          width    = {width}
         />
     );
     
     return (
       <div style={style.root}>
-        {tiles}
+        { tiles }
         {
-          this.props.adding ?
+          adding ?
             <Tile
               key      = 'adding'
               adding   = {true}
-              onDelete = {this.props.stopAdding}
+              onDelete = {stopAdding}
 
-              items    = {this.props.items}
-              onSelect = {this.props.onSelect}
-              onChange = {this.props.onChange}
+              items    = {items}
+              onSelect = {onSelect}
+              onChange = {onChange}
             />
             : null
         }

@@ -36,11 +36,14 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {tileWidth: 0};
+    this.calcTileWidth = this.calcTileWidth.bind(this);
   }
   
   componentDidMount() {
+    this.calcTileWidth(this.props.cities.length);
+    window.onresize = this.calcTileWidth;
     if (!this.props.cities.length) {
-
       if (localStorage.cities) {
         // loading from the storage
         const cities = JSON.parse(localStorage.cities);
@@ -54,6 +57,18 @@ class App extends Component {
     }
 
     setInterval(this.updateWeather.bind(this), 1800000);
+  }
+  
+  componentWillUnmount() {
+    window.onresize = () => {};
+  }
+  
+  calcTileWidth(cityLen) {
+    if (typeof cityLen !== 'number') cityLen = this.props.cities.length;
+    const w = window.innerWidth;
+    let wt = ~~(w / (cityLen/2));
+    if (cityLen < 4) wt = 200;
+    this.setState({tileWidth: wt});
   }
 
   saveCities(cities) {
@@ -72,6 +87,7 @@ class App extends Component {
     if (this.props.cities !== nextProps.cities) {
       this.saveCities(nextProps.cities);
     }
+    this.calcTileWidth(nextProps.cities.length);
   }
 
   onCitySelected = (cityIndex) => {
@@ -162,6 +178,7 @@ class App extends Component {
             items      = {suggestions}
             onSelect   = {this.onCitySelected}
             onChange   = {this.onKeywordsChange}
+            width      = {this.state.tileWidth}
           />
         </Body>
 
