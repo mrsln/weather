@@ -21,6 +21,7 @@ The list of technologies and approaches:
   * es6, es7
   * localStorage (instant reloading)
   * flexbox (try to resize)
+  * material ui typography
 
 For the server side I wrote a simple Go application and run it on Heroku.
 
