@@ -36,13 +36,16 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {tileWidth: 0};
+    this.state = {windowWidth: 0};
     this.calcTileWidth = this.calcTileWidth.bind(this);
   }
   
   componentDidMount() {
     this.calcTileWidth(this.props.cities.length);
-    window.onresize = this.calcTileWidth;
+    window.onresize = () => {
+      this.calcTileWidth();
+      setTimeout(this.calcTileWidth, 300);
+    };
     if (!this.props.cities.length) {
       if (localStorage.cities) {
         // loading from the storage
@@ -63,12 +66,9 @@ class App extends Component {
     window.onresize = () => {};
   }
   
-  calcTileWidth(cityLen) {
-    if (typeof cityLen !== 'number') cityLen = this.props.cities.length;
-    const w = window.innerWidth;
-    let wt = ~~(w / (cityLen/2));
-    if (cityLen < 4) wt = 200;
-    this.setState({tileWidth: wt});
+  calcTileWidth() {
+    const windowWidth = window.innerWidth;
+    this.setState({ windowWidth });
   }
 
   saveCities(cities) {
@@ -87,7 +87,6 @@ class App extends Component {
     if (this.props.cities !== nextProps.cities) {
       this.saveCities(nextProps.cities);
     }
-    this.calcTileWidth(nextProps.cities.length);
   }
 
   onCitySelected = (cityIndex) => {
@@ -127,6 +126,12 @@ class App extends Component {
       cityList
     } = this.props;
     
+    let tileWidth = 200;
+    const cityLen = cities.length;
+    if (cityLen > 3) {
+      tileWidth = ~~(this.state.windowWidth / (cityLen/2))-10;
+    }
+    
     let suggestions = cityList.map(city => city.Description);
 
     let style = {
@@ -134,6 +139,7 @@ class App extends Component {
         right: 15,
         top: 15,
         position: 'absolute',
+        display: this.state.windowWidth > 500 ? 'block' : 'none',
       },
       forka: {
         textDecoration: 'none',
@@ -178,7 +184,7 @@ class App extends Component {
             items      = {suggestions}
             onSelect   = {this.onCitySelected}
             onChange   = {this.onKeywordsChange}
-            width      = {this.state.tileWidth}
+            width      = {tileWidth}
           />
         </Body>
 

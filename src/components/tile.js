@@ -123,7 +123,7 @@ export default class Tile extends Component {
         justifyContent: 'center',
         display: 'flex',
         flexGrow: 1,
-        flexBasis: 150,
+        // flexBasis: 150,
         flexDirection: 'column',
         alignItems: 'center',
         minWidth: width,

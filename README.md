@@ -43,3 +43,4 @@ npm start
   * show pictures of the city (from flickr, instagram or webcams)
   * dnd for sorting
   * editing existing city
+  * init with widly known cities
