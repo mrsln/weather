@@ -30,6 +30,8 @@ import Body    from './components/body';
 import Button from './components/button';
 import Logo from './components/logo';
 
+import FloatingActionButton from './components/floating-action-button';
+
 import { geoLocate } from './geolocation';
 
 class App extends Component {
@@ -156,11 +158,13 @@ class App extends Component {
 
     return (
       <div style={style.root}>
+        <FloatingActionButton />
+
         <Err err = {err} />
 
         <Header>
           <Logo/>
-          
+          {/* 
           <Button
             onClick = {this.toggleAddingMode}
           >
@@ -175,6 +179,7 @@ class App extends Component {
           <div style={style.fork}>
             <a style={style.forka} href="https://github.com/mrsln/weather">Fork it!</a>
           </div>
+          */}
         </Header>
 
         <Body>
