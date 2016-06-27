@@ -44,3 +44,7 @@ npm start
   * dnd for sorting
   * editing existing city
   * init with widly known cities
+  * try out http://locationiq.org/
+  * refactor saveing to the localStorage, based on Dan's tutorial
+  * refactor index: extract root component
+  * refactor dispatching the action

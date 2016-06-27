@@ -148,6 +148,9 @@ class App extends Component {
       root: {
         color: '#212121',
         fontFamily: 'Roboto, Noto, sans-serif',
+        display: 'flex',
+        minHeight: '100%',
+        flexDirection: 'column',
       },
     };
 
