@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Autocomplete         from './autocomplete';
+import Hoverable from './hoverable';
 
-export default class Tile extends Component {
+export class Tile extends Component {
 
   static propTypes = {
     city: React.PropTypes.shape({
@@ -101,19 +102,22 @@ export default class Tile extends Component {
       onDelete,
       city,
       width,
+      isHovered,
     } = this.props;
-    let editing = this.state.tileHovered || this.props.editing;
+    let editing = true;// this.state.tileHovered || this.props.editing;
 
     let style = {
       minus: {
-        padding: '0 5px',
+        padding: 20,
         cursor: 'pointer',
         position: 'absolute',
         right: 5,
         top: 5,
-        display: editing ? 'block' : 'none',
-        backgroundColor: this.state.minusHovered ? 'lightgray' : 'transparent',
+        display: editing ? 'flex' : 'none',
+        backgroundColor: this.state.minusHovered ? 'rgba(0,0,0,0.1)' : 'transparent',
         color: '#727272',
+        borderRadius: '50%',
+        lineHeight: 1,
       },
       root: {
         border: `1px solid rgba(0, 0, 0, ${editing ? '0.06' : '0'})`,
@@ -127,13 +131,21 @@ export default class Tile extends Component {
         alignItems: 'center',
         minWidth: width,
         zIndex: 1,
-        marginTop: -1,
+        // marginTop: -1,
+        margin: 20,
         color: (!adding && city.updated > 0 ? 'inherit' : 'gray'),
+        backgroundColor: 'white',
+        boxShadow: '0 3px 10px rgba(0,0,0,0.23),0 3px 10px rgba(0,0,0,0.16)',
+        borderRadius: 2,
       },
       content: {
         textAlign: 'center',
       },
     };
+
+    if (isHovered) {
+      style.root.boxShadow = '0 5px 15px rgba(0,0,0,0.25),0 5px 15px rgba(0,0,0,0.18)';
+    }
 
     let delBtn = null;
     if (typeof onDelete === 'function') {
@@ -143,7 +155,7 @@ export default class Tile extends Component {
           onMouseEnter = {this.onMinusHover}
           onMouseLeave = {this.offMinusHover}
           onClick      = {onDelete}
-        >X</span>
+        >×</span>
       );
     }
 
@@ -165,4 +177,6 @@ export default class Tile extends Component {
       </div>
     );
   }
-}
+};
+
+export default Hoverable(Tile);

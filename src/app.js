@@ -125,13 +125,14 @@ class App extends Component {
     const {
       cities,
       err,
-      cityList
+      cityList,
+      mode,
     } = this.props;
     
     let tileWidth = 200;
-    const cityLen = cities.length;
+    const cityLen = cities.length + ~~(mode === ADDING_MODE);
     if (cityLen > 3) {
-      tileWidth = ~~(this.state.windowWidth / (cityLen/2))-10;
+      tileWidth = ~~(this.state.windowWidth / (cityLen/2))-150;
     }
     
     let suggestions = cityList.map(city => city.Description);
@@ -145,7 +146,7 @@ class App extends Component {
       },
       forka: {
         textDecoration: 'none',
-        color: '#FF9800',
+        color: '#C8E6C9',
       },
       root: {
         color: '#212121',
@@ -158,36 +159,28 @@ class App extends Component {
 
     return (
       <div style={style.root}>
-        <FloatingActionButton />
+        <FloatingActionButton
+          onClick = {this.toggleAddingMode}
+          mode = {mode === ADDING_MODE ? 'CANCEL' : 'NORMAL'}
+        />
 
         <Err err = {err} />
 
         <Header>
           <Logo/>
-          {/* 
-          <Button
-            onClick = {this.toggleAddingMode}
-          >
-            {this.props.mode === ADDING_MODE ? 'Done' : 'Add'}
-          </Button>
-          <Button
-            onClick = {this.toggleEditingMode}
-          >
-            {this.props.mode === EDITING_MODE ? 'Done' : 'Edit'}
-          </Button>
 
           <div style={style.fork}>
-            <a style={style.forka} href="https://github.com/mrsln/weather">Fork it!</a>
+            <a style={style.forka} href="https://github.com/mrsln/weather">fork it</a>
           </div>
-          */}
+          
         </Header>
 
         <Body>
           <Tiles
             cities     = {cities}
             onDelete   = {this.onCitytDelete}
-            adding     = {this.props.mode === ADDING_MODE}
-            editing    = {this.props.mode === EDITING_MODE}
+            adding     = {mode === ADDING_MODE}
+            editing    = {mode === EDITING_MODE}
             stopAdding = {this.toggleAddingMode}
             items      = {suggestions}
             onSelect   = {this.onCitySelected}

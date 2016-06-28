@@ -11,6 +11,7 @@ export default class Header extends Component {
       backgroundColor: '#4caf50',
       boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
       color: 'white',
+      zIndex: 5,
     };
 
     return (

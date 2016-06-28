@@ -56,6 +56,7 @@ export default class Tiles extends Component {
             <Tile
               key      = 'adding'
               adding   = {true}
+              width    = {width}
               onDelete = {stopAdding}
 
               items    = {items}

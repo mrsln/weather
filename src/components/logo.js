@@ -10,13 +10,16 @@ export default class Button extends Component {
       name: {
         fontSize: 36,
         fontWeight: 300,
-        // lineHeight: '64px',
+        float: 'left',
       },
       slogan: {
         fontWeight: 300,
         fontSize: 16,
-        // lineHeight: '1.5',
         color: '#c8e6c9',
+        float: 'right',
+        display: 'flex',
+        height: 40,
+        alignItems: 'flex-end',
       },
     };
 

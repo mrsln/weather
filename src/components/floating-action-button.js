@@ -11,7 +11,7 @@ export default function FloatingActionButton(props) {
 
   return (
     <div style={style}>
-      <ActionButton { ...props } />
+        <ActionButton {...props} />
     </div>
   )
 };
