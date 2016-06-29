@@ -56,7 +56,14 @@ class App extends Component {
       } else {
         // init with the user's current location
         geoLocate(
-          (lat, lng) => this.props.addMyCity(lat, lng)
+          (lat, lng) => {
+            this.props.addMyCity(lat, lng);
+            this.props.addCity('Berlin');
+            this.props.addCity('San Francisco');
+            this.props.addCity('Brasilia');
+            this.props.addCity('Dubai');
+            this.props.addCity('Sydney');
+          }
         );
       }
     }
@@ -208,6 +215,7 @@ export default connect(
     mode,
   }),
   (dispatch) => ({
+    addCity: bindActionCreators(addCity, dispatch),
     addCityById: bindActionCreators(addCityById, dispatch),
     addMyCity: bindActionCreators(addMyCity, dispatch),
     setMode: bindActionCreators(setMode, dispatch),

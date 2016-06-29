@@ -26,8 +26,9 @@ const MY_CITY_URL = 'http://cities-api.herokuapp.com/mycity';
 const makeMyCityApiUrl = (lat, lng) => `${MY_CITY_URL}?lat=${lat}&lng=${lng}`;
 
 // add a city by a name
-export function addCity(city) {
+export function addCity(city, id = uuid.v4()) {
   return dispatch => {
+    dispatch(upsertLoadingCity(id, `Getting the weather for ${name}`));
     return fetch(makeApiUrl(city))
       .then(response => {
         if (response.status >= 400) {
@@ -37,7 +38,7 @@ export function addCity(city) {
         }
         return response.json();
       })
-      .then(json => dispatch(upsertCity(json, city)))
+      .then(json => dispatch(upsertCity(json, city, id)))
   };
 }
 
