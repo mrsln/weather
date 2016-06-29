@@ -24,15 +24,10 @@ export default function Hoverable(Comp) {
     }
 
     render() {
-      const style = {
-        display: 'flex',
-        flexGrow: 1,
-      };
       return (
         <div
           onMouseEnter = {this.onMouseEnter}
           onMouseLeave = {this.onMouseLeave}
-          style = {style}
         >
           <Comp { ...this.props } isHovered={this.state.isHovered} />
         </div>

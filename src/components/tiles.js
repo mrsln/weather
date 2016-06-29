@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
 import Tile from './tile';
 
-const style = {
-  root: {
-    display: 'flex',
-    width: '100%',
-    minHeight: '100%',
-    flexWrap: 'wrap',
-  },
-};
-
 export default class Tiles extends Component {
   
   static propTypes = {
@@ -42,29 +33,32 @@ export default class Tiles extends Component {
         <Tile
           key      = {'tile_' + i}
           city     = {city}
-          onDelete = {onDelete.bind(this, i)}
+          onDelete = {city.adding ? stopAdding : onDelete.bind(this, i)}
           editing  = {editing}
           width    = {width}
+
+          loading  = {city.loading}
+          text     = {city.text}
+
+          adding   = {city.adding}
+          items    = {items}
+          onSelect = {onSelect}
+          onChange = {onChange}
         />
     );
+
+    const style = {
+      root: {
+        display: 'flex',
+        width: '100%',
+        minHeight: '100%',
+        flexWrap: 'wrap',
+      },
+    };
     
     return (
       <div style={style.root}>
         { tiles }
-        {
-          adding ?
-            <Tile
-              key      = 'adding'
-              adding   = {true}
-              width    = {width}
-              onDelete = {stopAdding}
-
-              items    = {items}
-              onSelect = {onSelect}
-              onChange = {onChange}
-            />
-            : null
-        }
       </div>
     );
   }

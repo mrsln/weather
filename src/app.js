@@ -92,7 +92,6 @@ class App extends Component {
   }
 
   onCitySelected = (cityIndex) => {
-    this.props.setMode(DEFAULT_MODE);
     let city = this.props.cityList[cityIndex];
     this.props.setCityList([]);
     this.props.addCityByLocation(city.Location.Lat, city.Location.Lng, city.Description);
@@ -130,9 +129,11 @@ class App extends Component {
     } = this.props;
     
     let tileWidth = 200;
-    const cityLen = cities.length + ~~(mode === ADDING_MODE);
+    const cityLen = cities.length;
     if (cityLen > 3) {
-      tileWidth = ~~(this.state.windowWidth / (cityLen/2))-150;
+      tileWidth = ~~( (this.state.windowWidth-90) / Math.round(cityLen/2) );
+    } else {
+      tileWidth = (this.state.windowWidth-90) / cityLen;
     }
     
     let suggestions = cityList.map(city => city.Description);
@@ -216,5 +217,6 @@ export default connect(
     deleteCity: bindActionCreators(deleteCity, dispatch),
     toggleAddingMode: bindActionCreators(toggleAddingMode, dispatch),
     toggleEditingMode: bindActionCreators(toggleEditingMode, dispatch),
+    resetError: bindActionCreators(resetError, dispatch),
   })
 )(App);

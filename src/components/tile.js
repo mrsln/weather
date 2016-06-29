@@ -1,43 +1,19 @@
 import React, { Component } from 'react';
-import Autocomplete         from './autocomplete';
-import Hoverable from './hoverable';
+import Autocomplete from './autocomplete';
+import DeleteButton from './delete-button';
 
-export class Tile extends Component {
+export default class Tile extends Component {
 
   static propTypes = {
     city: React.PropTypes.shape({
-      name: React.PropTypes.string.isRequired,
-      temperature: React.PropTypes.number.isRequired,
+      name: React.PropTypes.string,
+      temperature: React.PropTypes.number,
       updated: React.PropTypes.number,
     }),
 
     onDelete: React.PropTypes.func,
     adding: React.PropTypes.bool,
-    editing: React.PropTypes.bool,
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      minusHovered: false, // doesn't feel like a prop
-      tileHovered: false,
-    };
-  }
-
-  onMinusHover = () => {
-    this.setState({minusHovered: true});
-  }
-
-  offMinusHover = () => {
-    this.setState({minusHovered: false});
-  }
-
-  onRootHover = () => {
-    this.setState({tileHovered: true});
-  }
-
-  offRootHover = () => {
-    this.setState({tileHovered: false});
+    loading: React.PropTypes.bool,
   }
 
   renderCity() {
@@ -86,41 +62,64 @@ export class Tile extends Component {
     );
   }
 
+  renderLoading() {
+    const {
+      text,
+    } = this.props;
+    
+    const style = {
+      color: '#B6B6B6',
+    };
+
+    return (
+      <div style={style}>
+        {text}
+      </div>
+    );
+  }
+
   renderAutocomplete() {
+    const {
+      items,
+      onSelect,
+      onChange,
+    } = this.props;
+
     return (
       <Autocomplete
-        items    = {this.props.items}
-        onSelect = {this.props.onSelect}
-        onChange = {this.props.onChange}
+        items    = {items}
+        onSelect = {onSelect}
+        onChange = {onChange}
       />
     );
   }
 
+  renderContent() {
+    const {
+      loading,
+      adding,
+    } = this.props;
+
+    if (loading) {
+      return this.renderLoading();
+    } else if (adding) {
+      return this.renderAutocomplete();
+    }
+    return this.renderCity();
+  }
+
   render() {
     const {
-      adding,
       onDelete,
       city,
       width,
-      isHovered,
     } = this.props;
-    let editing = true;// this.state.tileHovered || this.props.editing;
+
+    const w = width - 40;
 
     let style = {
-      minus: {
-        padding: 20,
-        cursor: 'pointer',
-        position: 'absolute',
-        right: 5,
-        top: 5,
-        display: editing ? 'flex' : 'none',
-        backgroundColor: this.state.minusHovered ? 'rgba(0,0,0,0.1)' : 'transparent',
-        color: '#727272',
-        borderRadius: '50%',
-        lineHeight: 1,
-      },
       root: {
-        border: `1px solid rgba(0, 0, 0, ${editing ? '0.06' : '0'})`,
+        border: `1px solid rgba(0, 0, 0, .06)`,
         boxSizing: 'border-box',
         padding: 20,
         position: 'relative',
@@ -129,11 +128,10 @@ export class Tile extends Component {
         flexGrow: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        minWidth: width,
-        zIndex: 1,
-        // marginTop: -1,
+        minWidth: w,
+        maxWidth: w,
+        width: w,
         margin: 20,
-        color: (!adding && city.updated > 0 ? 'inherit' : 'gray'),
         backgroundColor: 'white',
         boxShadow: '0 3px 10px rgba(0,0,0,0.23),0 3px 10px rgba(0,0,0,0.16)',
         borderRadius: 2,
@@ -143,20 +141,9 @@ export class Tile extends Component {
       },
     };
 
-    if (isHovered) {
-      style.root.boxShadow = '0 5px 15px rgba(0,0,0,0.25),0 5px 15px rgba(0,0,0,0.18)';
-    }
-
     let delBtn = null;
     if (typeof onDelete === 'function') {
-      delBtn = (
-        <span
-          style        = {style.minus}
-          onMouseEnter = {this.onMinusHover}
-          onMouseLeave = {this.offMinusHover}
-          onClick      = {onDelete}
-        >×</span>
-      );
+      delBtn = <DeleteButton onDelete={onDelete} />;
     }
 
     return (
@@ -166,10 +153,7 @@ export class Tile extends Component {
         onMouseLeave = {this.offRootHover}
       >
         <div style={style.content}>
-          {
-            // TODO: must be 2 different components
-            adding ? this.renderAutocomplete() : this.renderCity()
-          }
+          { this.renderContent() }
         </div>
 
         {delBtn}
@@ -178,5 +162,3 @@ export class Tile extends Component {
     );
   }
 };
-
-export default Hoverable(Tile);

@@ -1,10 +1,16 @@
 import fetch from 'isomorphic-fetch';
+import uuid from 'uuid';
 
+export const UPSERT_LOADING_CITY = 'UPSERT_LOADING_CITY';
 export const UPSERT_CITY   = 'UPSERT_CITY';
 export const DELETE_CITY   = 'DELETE_CITY';
 export const ERROR         = 'ERROR';
 export const RESET_ERROR   = 'RESET_ERROR';
 export const SET_CITY_LIST = 'SET_CITY_LIST';
+
+export const ADDING_MODE = 'ADDING_MODE';
+export const EDITING_MODE = 'EDITING_MODE';
+export const DEFAULT_MODE = 'DEFAULT_MODE';
 
 const API_KEY = 'ec7ff474e2549898d7e4ff07b645fe29';
 const API_URL = 'http://api.openweathermap.org/data/2.5/weather';
@@ -22,7 +28,6 @@ const makeMyCityApiUrl = (lat, lng) => `${MY_CITY_URL}?lat=${lat}&lng=${lng}`;
 // add a city by a name
 export function addCity(city) {
   return dispatch => {
-    // dispatch(initCity(city));
     return fetch(makeApiUrl(city))
       .then(response => {
         if (response.status >= 400) {
@@ -32,12 +37,13 @@ export function addCity(city) {
         }
         return response.json();
       })
-      .then(json     => dispatch(upsertCity(json, city)))
+      .then(json => dispatch(upsertCity(json, city)))
   };
 }
 
-export function addCityByLocation(lat, lng, name) {
+export function addCityByLocation(lat, lng, name, id = uuid.v4()) {
   return dispatch => {
+    dispatch(upsertLoadingCity(id, `Getting the weather for ${name}`));
     return fetch(makeGeoApiUrl(lat, lng))
       .then(response => {
         if (response.status >= 400) {
@@ -47,7 +53,10 @@ export function addCityByLocation(lat, lng, name) {
         }
         return response.json();
       })
-      .then(json     => dispatch(upsertCity(json, name)))
+      .then((json) => {
+        dispatch(upsertCity(json, name, id));
+        dispatch(setMode(DEFAULT_MODE));
+      })
   };
 }
 
@@ -74,7 +83,7 @@ export function addCityById(id, name, temperature = 0) {
         }
         return response.json();
       })
-      .then(json     => dispatch(upsertCity(json, name)))
+      .then(json => dispatch(upsertCity(json, name)))
   };
 }
 
@@ -86,9 +95,14 @@ export function deleteCity(i) {
 }
 
 export function addMyCity(lat, lng) {
-  return dispatch => {
+  return (dispatch) => {
+    
+    const id = uuid.v4();;
+    dispatch(upsertLoadingCity(id, 'Getting your city name'));
+
+    // getting the city name
     return fetch(makeMyCityApiUrl(lat, lng))
-      .then(response => {
+      .then((response) => {
         if (response.status >= 400) {
           setTimeout( () => {
             dispatch(addMyCity(lat, lng));
@@ -96,8 +110,19 @@ export function addMyCity(lat, lng) {
         }
         return response.json();
       })
-      .then(json => dispatch(addCityByLocation(json.Location.Lat, json.Location.Lng, json.Description)))
+      .then((json) => {
+        dispatch(upsertLoadingCity(id, `Getting temperature of ${json.Description}`));
+        dispatch(addCityByLocation(json.Location.Lat, json.Location.Lng, json.Description, id));
+      });
   }
+}
+
+function upsertLoadingCity(id, text) {
+  return {
+    type: UPSERT_LOADING_CITY,
+    id,
+    text,
+  };
 }
 
 // get a list of cities with the `input` in their names
@@ -123,7 +148,7 @@ export function setCityList(list) {
 }
 
 // insert or update a city with the json from API
-export function upsertCity(json, forceName) {
+export function upsertCity(json, forceName, id) {
   if (json.cod !== 200) {
     return {
       type: ERROR,
@@ -139,6 +164,7 @@ export function upsertCity(json, forceName) {
   return {
     type: UPSERT_CITY,
     city,
+    oldId: id,
   };
 }
 
@@ -148,9 +174,6 @@ export function resetError() {
   };
 }
 
-export const ADDING_MODE = 'ADDING_MODE';
-export const EDITING_MODE = 'EDITING_MODE';
-export const DEFAULT_MODE = 'DEFAULT_MODE';
 export function setMode(mode) {
   return {
     type: mode,
