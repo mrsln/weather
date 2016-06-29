@@ -38,16 +38,19 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {windowWidth: 0};
+
+    this.state = { windowWidth: 0 };
     this.calcTileWidth = this.calcTileWidth.bind(this);
   }
   
   componentDidMount() {
     this.calcTileWidth(this.props.cities.length);
+    
     window.onresize = () => {
       this.calcTileWidth();
       setTimeout(this.calcTileWidth, 300);
     };
+
     if (!this.props.cities.length) {
       if (localStorage.cities) {
         // loading from the storage
@@ -214,17 +217,17 @@ export default connect(
     cityList,
     mode,
   }),
-  (dispatch) => ({
-    addCity: bindActionCreators(addCity, dispatch),
-    addCityById: bindActionCreators(addCityById, dispatch),
-    addMyCity: bindActionCreators(addMyCity, dispatch),
-    setMode: bindActionCreators(setMode, dispatch),
-    setCityList: bindActionCreators(setCityList, dispatch),
-    addCityByLocation: bindActionCreators(addCityByLocation, dispatch),
-    searchCity: bindActionCreators(searchCity, dispatch),
-    deleteCity: bindActionCreators(deleteCity, dispatch),
-    toggleAddingMode: bindActionCreators(toggleAddingMode, dispatch),
-    toggleEditingMode: bindActionCreators(toggleEditingMode, dispatch),
-    resetError: bindActionCreators(resetError, dispatch),
-  })
+  {
+    addCity,
+    addCityById,
+    addMyCity,
+    setMode,
+    setCityList,
+    addCityByLocation,
+    searchCity,
+    deleteCity,
+    toggleAddingMode,
+    toggleEditingMode,
+    resetError,
+  }
 )(App);

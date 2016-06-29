@@ -36,15 +36,9 @@ npm start
 
 ## Ideas ##
 
-  * [instant web application](https://glebbahmutov.com/blog/instant-web-application/)
-  * switch to a better weather API (yahoo, weather.com)
-  * speed up the city search API
+  * dnd for sorting
+  * a spinner in the city search
+  * editing existing city
   * somehow show if it's raining, snowing or just cloudy
   * show pictures of the city (from flickr, instagram or webcams)
-  * dnd for sorting
-  * editing existing city
-  * init with widly known cities
-  * try out http://locationiq.org/
-  * refactor saveing to the localStorage, based on Dan's tutorial
-  * refactor index: extract root component
   * refactor dispatching the action
