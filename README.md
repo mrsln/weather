@@ -1,9 +1,8 @@
 # Weather app
 
-I wrote it as a technical task for a job. Then I realised how fun it is to know the temperature in
-other parts of the world.
+[Live](http://marsel.name/weather/)
 
-Sometimes I use this project to try new features in the React world.
+I use this project to try new features in the React world.
 
 Currently it can:
 
