@@ -40,4 +40,3 @@ npm start
   * editing existing city
   * somehow show if it's raining, snowing or just cloudy
   * show pictures of the city (from flickr, instagram or webcams)
-  * refactor dispatching the action
