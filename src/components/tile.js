@@ -17,47 +17,38 @@ export default class Tile extends Component {
   }
 
   renderCity() {
+    const width = this.props.width - 40;
     let style = {
       temp: {
-        fontSize: 56,
+        fontSize: ~~(width/5),
         fontWeight: 400,
-        lineHeight: '64px',
+        lineHeight: 1.5,
         color: '#212121',
       },
       city: {
         color: '#727272',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
-        fontSize: 24,
-        lineHeight: '26px',
-      },
-      region: {
-        color: '#B6B6B6',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
-        fontSize: 14,
-        lineHeight: '23px',
+        fontSize: ~~(width / 13),
+        lineHeight: 1.2,
       },
     };
     
     // extracting city and region names. Everything before a comma is a city name.
     let city   = this.props.city.name.split(',').slice(0, 1).join();
-    let region = this.props.city.name.split(',').slice(1).join();
 
     return (
       <div>
+        
+        <div style={style.city}>
+          {city}
+        </div>
+
         <div style={style.temp}>
           {this.props.city.temperature > 0 ? '+' : ''}
           {this.props.city.temperature}
         </div>
 
-        <div style={style.city}>
-          {city}
-        </div>
-
-        <div style={style.region}>
-          {region}
-        </div>
       </div>
     );
   }

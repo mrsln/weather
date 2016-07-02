@@ -138,12 +138,16 @@ class App extends Component {
       mode,
     } = this.props;
     
-    let tileWidth = 200;
+    const { windowWidth } = this.state;
+
     const cityLen = cities.length;
-    if (cityLen > 3) {
-      tileWidth = ~~( (this.state.windowWidth-90) / Math.round(cityLen/2) );
-    } else {
-      tileWidth = (this.state.windowWidth-90) / cityLen;
+    let tileWidth = windowWidth - 90;
+    if (windowWidth > 800) {
+      if (cityLen > 3) {
+        tileWidth = ~~( (windowWidth-90) / Math.round(cityLen/2) );
+      } else {
+        tileWidth = (windowWidth-90) / cityLen;
+      }
     }
     
     let suggestions = cityList.map(city => city.Description);
@@ -153,7 +157,7 @@ class App extends Component {
         right: 15,
         top: 15,
         position: 'absolute',
-        display: this.state.windowWidth > 500 ? 'block' : 'none',
+        display: windowWidth > 500 ? 'block' : 'none',
       },
       forka: {
         textDecoration: 'none',

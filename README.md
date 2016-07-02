@@ -40,3 +40,5 @@ npm start
   * editing existing city
   * somehow show if it's raining, snowing or just cloudy
   * show pictures of the city (from flickr, instagram or webcams)
+  * spinner
+  * create a transparent box in the bottom of a tile with delete button in the middle
