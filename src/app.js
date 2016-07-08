@@ -19,6 +19,7 @@ import {
   ADDING_MODE,
   EDITING_MODE,
   toggleEditingMode,
+  moveCity,
 } from './actions';
 
 import Tiles   from './components/tiles';
@@ -41,6 +42,10 @@ class App extends Component {
 
     this.state = { windowWidth: 0 };
     this.calcTileWidth = this.calcTileWidth.bind(this);
+    this.onCitySelected = this.onCitySelected.bind(this);
+    this.onKeywordsChange = this.onKeywordsChange.bind(this);
+    this.toggleAddingMode = this.toggleAddingMode.bind(this);
+    this.toggleEditingMode = this.toggleEditingMode.bind(this);
   }
   
   componentDidMount() {
@@ -101,13 +106,13 @@ class App extends Component {
     }
   }
 
-  onCitySelected = (cityIndex) => {
+  onCitySelected(cityIndex) {
     let city = this.props.cityList[cityIndex];
     this.props.setCityList([]);
     this.props.addCityByLocation(city.Location.Lat, city.Location.Lng, city.Description);
   };
 
-  onKeywordsChange = (keywords) => {
+  onKeywordsChange(keywords) {
     if (!keywords || !keywords.length) return;
 
     geoLocate(
@@ -118,15 +123,11 @@ class App extends Component {
     );
   }
 
-  onCitytDelete = (i) => {
-    this.props.deleteCity(i);
-  }
-
-  toggleAddingMode = () => {
+  toggleAddingMode() {
     this.props.toggleAddingMode(this.props.mode);
   }
 
-  toggleEditingMode = () => {
+  toggleEditingMode() {
     this.props.toggleEditingMode(this.props.mode);
   }
 
@@ -136,6 +137,8 @@ class App extends Component {
       err,
       cityList,
       mode,
+      moveCity,
+      deleteCity,
     } = this.props;
     
     const { windowWidth } = this.state;
@@ -193,7 +196,7 @@ class App extends Component {
         <Body>
           <Tiles
             cities     = {cities}
-            onDelete   = {this.onCitytDelete}
+            onDelete   = {deleteCity}
             adding     = {mode === ADDING_MODE}
             editing    = {mode === EDITING_MODE}
             stopAdding = {this.toggleAddingMode}
@@ -201,6 +204,7 @@ class App extends Component {
             onSelect   = {this.onCitySelected}
             onChange   = {this.onKeywordsChange}
             width      = {tileWidth}
+            moveTile   = {moveCity}
           />
         </Body>
 
@@ -233,5 +237,6 @@ export default connect(
     toggleAddingMode,
     toggleEditingMode,
     resetError,
+    moveCity,
   }
 )(App);

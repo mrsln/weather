@@ -19,7 +19,11 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.js$/,
-      loaders: ['babel?presets[]=react,presets[]=es2015,presets[]=stage-0'],
+      loader: 'babel',
+      query: {
+        plugins: ['transform-decorators-legacy'],
+        presets: ['react', 'es2015', 'stage-0']
+      },
       include: path.join(__dirname, 'src')
     }]
   }
