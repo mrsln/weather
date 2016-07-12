@@ -164,7 +164,6 @@ export default class Tile extends Component {
         borderRadius: 2,
         WebkitUserSelect: 'none',
         opacity: isDragging ? 0 : 1,
-        transition: 'all .3s',
         order: i,
       },
       content: {
