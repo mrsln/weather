@@ -89,10 +89,10 @@ export function addCityById(id, name, temperature = 0) {
   };
 }
 
-export function moveCity(from, to) {
+export function moveCity(base, to) {
   return {
     type: MOVE_CITY,
-    from,
+    base,
     to,
   };
 }

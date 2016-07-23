@@ -7,23 +7,26 @@ import { findDOMNode } from 'react-dom';
 const cardSource = {
   beginDrag(props) {
     return {
-      index: props.i
+      i: props.i
     };
-  }
+  },
+  isDragging(props, monitor) {
+    return monitor.getItem().i === props.i;
+  },
 };
 
 const cardTarget = {
   hover(props, monitor, component) {
-    const dragIndex = monitor.getItem().index;
+    const dragIndex = monitor.getItem().i;
     const hoverIndex = props.i;
 
     // Don't replace items with themselves
     if (dragIndex === hoverIndex) {
       return;
     }
-
+    
+    monitor.getItem().i = hoverIndex;
     props.moveTile(dragIndex, hoverIndex);
-    monitor.getItem().index = hoverIndex;
   }
 };
 
@@ -164,7 +167,7 @@ export default class Tile extends Component {
         borderRadius: 2,
         WebkitUserSelect: 'none',
         opacity: isDragging ? 0 : 1,
-        order: i,
+        // order: i,
       },
       content: {
         textAlign: 'center',

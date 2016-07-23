@@ -82,16 +82,17 @@ function cities(state = [], action) {
       return state.filter( (city, i) => i !== action.i );
     case MOVE_CITY: {
       const {
-        from,
+        base,
         to,
       } = action;
 
       const newState = [ ...state ];
-      const tmp = newState[from];
-      newState[from] = newState[to];
-      newState[to] = tmp;
+      const drag = newState[base];
+      newState.splice(base, 1);
+      newState.splice(to, 0, drag);
+
       return newState;
-    } 
+    }
     default:
       return state;
   }
