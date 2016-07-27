@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Tile from './tile';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
+@DragDropContext(HTML5Backend)
 export default class Tiles extends Component {
   
   static propTypes = {
@@ -26,6 +29,7 @@ export default class Tiles extends Component {
       onSelect,
       onChange,
       width,
+      moveTile,
     } = this.props;
     
     const tiles = cities.map(
@@ -44,6 +48,9 @@ export default class Tiles extends Component {
           items    = {items}
           onSelect = {onSelect}
           onChange = {onChange}
+
+          i = {i}
+          moveTile = {moveTile}
         />
     );
 

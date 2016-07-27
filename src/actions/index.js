@@ -7,6 +7,7 @@ export const DELETE_CITY   = 'DELETE_CITY';
 export const ERROR         = 'ERROR';
 export const RESET_ERROR   = 'RESET_ERROR';
 export const SET_CITY_LIST = 'SET_CITY_LIST';
+export const MOVE_CITY     = 'MOVE_CITY';
 
 export const ADDING_MODE = 'ADDING_MODE';
 export const EDITING_MODE = 'EDITING_MODE';
@@ -85,6 +86,14 @@ export function addCityById(id, name, temperature = 0) {
         return response.json();
       })
       .then(json => dispatch(upsertCity(json, name)))
+  };
+}
+
+export function moveCity(base, to) {
+  return {
+    type: MOVE_CITY,
+    base,
+    to,
   };
 }
 

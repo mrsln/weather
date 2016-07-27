@@ -1,7 +1,42 @@
 import React, { Component } from 'react';
 import Autocomplete from './autocomplete';
 import DeleteButton from './delete-button';
+import { DragSource, DropTarget } from 'react-dnd';
+import { findDOMNode } from 'react-dom';
 
+const cardSource = {
+  beginDrag(props) {
+    return {
+      i: props.i
+    };
+  },
+  isDragging(props, monitor) {
+    return monitor.getItem().i === props.i;
+  },
+};
+
+const cardTarget = {
+  hover(props, monitor, component) {
+    const dragIndex = monitor.getItem().i;
+    const hoverIndex = props.i;
+
+    // Don't replace items with themselves
+    if (dragIndex === hoverIndex) {
+      return;
+    }
+    
+    monitor.getItem().i = hoverIndex;
+    props.moveTile(dragIndex, hoverIndex);
+  }
+};
+
+@DropTarget('TILE', cardTarget, connect => ({
+  connectDropTarget: connect.dropTarget()
+}))
+@DragSource('TILE', cardSource, (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging()
+}))
 export default class Tile extends Component {
 
   static propTypes = {
@@ -104,6 +139,10 @@ export default class Tile extends Component {
       onDelete,
       city,
       width,
+      isDragging,
+      connectDragSource,
+      connectDropTarget,
+      i,
     } = this.props;
 
     const w = width - 40;
@@ -126,6 +165,9 @@ export default class Tile extends Component {
         backgroundColor: 'white',
         boxShadow: '0 3px 10px rgba(0,0,0,0.23),0 3px 10px rgba(0,0,0,0.16)',
         borderRadius: 2,
+        WebkitUserSelect: 'none',
+        opacity: isDragging ? 0 : 1,
+        // order: i,
       },
       content: {
         textAlign: 'center',
@@ -137,7 +179,7 @@ export default class Tile extends Component {
       delBtn = <DeleteButton onDelete={onDelete} />;
     }
 
-    return (
+    return connectDragSource(connectDropTarget(
       <div
         style = {style.root}
         onMouseEnter = {this.onRootHover}
@@ -150,6 +192,6 @@ export default class Tile extends Component {
         {delBtn}
 
       </div>
-    );
+    ));
   }
 };

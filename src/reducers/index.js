@@ -12,6 +12,7 @@ import {
   ADDING_MODE,
   EDITING_MODE,
   UPSERT_LOADING_CITY,
+  MOVE_CITY,
 } from '../actions';
 
 function cities(state = [], action) {
@@ -79,6 +80,19 @@ function cities(state = [], action) {
     }
     case DELETE_CITY:
       return state.filter( (city, i) => i !== action.i );
+    case MOVE_CITY: {
+      const {
+        base,
+        to,
+      } = action;
+
+      const newState = [ ...state ];
+      const drag = newState[base];
+      newState.splice(base, 1);
+      newState.splice(to, 0, drag);
+
+      return newState;
+    }
     default:
       return state;
   }
