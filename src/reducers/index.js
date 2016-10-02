@@ -22,6 +22,7 @@ function cities(state = [], action) {
       if (!action.city.hasOwnProperty('updated')) {
         action.city.updated = Date.now();
       }
+      action.city.name = action.city.name || 'error,error';
       
       let found = false;
       let newState = state.map((city) => {
@@ -59,6 +60,7 @@ function cities(state = [], action) {
           city.id = id;
           city.adding = false;
           city.loading = true;
+          city.name = 'err,err';
           found = true;
         }
         return city;
