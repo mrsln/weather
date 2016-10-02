@@ -29,7 +29,12 @@ export default class Autocomplete extends Component {
       highlighted = 0;
     }
     this.setState({highlighted});
-  }
+  };
+
+  onInputChange = (e) => {
+    const inputValue = e.target.value;
+    this.setState({ inputValue }, () => this.props.onChange(inputValue));
+  };
 
   render() {
     return (
@@ -38,7 +43,7 @@ export default class Autocomplete extends Component {
           items         = {this.props.items}
           
           inputValue    = {this.state.inputValue}
-          onInputChange = { (e) => this.setState({inputValue: e.target.value}, () => this.props.onChange(e.target.value)) }
+          onInputChange = { this.onInputChange }
           
           highlighted   = {this.state.highlighted}
           onHighlight   = {this.onHighlight} 
