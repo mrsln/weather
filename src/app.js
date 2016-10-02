@@ -68,8 +68,6 @@ class App extends Component {
             this.props.addMyCity(lat, lng);
             this.props.addCity('Berlin');
             this.props.addCity('San Francisco');
-            this.props.addCity('Brasilia');
-            this.props.addCity('Dubai');
             this.props.addCity('Sydney');
           }
         );
