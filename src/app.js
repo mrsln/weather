@@ -69,6 +69,7 @@ class App extends Component {
             this.props.addCity('Berlin');
             this.props.addCity('San Francisco');
             this.props.addCity('Sydney');
+            this.props.addCity('Moscow');
           }
         );
       }
