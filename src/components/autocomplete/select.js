@@ -14,12 +14,12 @@ export default class Select extends Component {
 
     let style = {
       root: {
-        position:        'absolute',
-        width:           '100%',
-        overflow:        'hidden',
-        textOverflow:    'ellipsis',
-        whiteSpace:      'nowrap',
-        textAlign:       'left',
+        position:     'absolute',
+        width:        '100%',
+        overflow:     'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace:   'nowrap',
+        textAlign:    'left',
 
         borderRadius: '3px',
         boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',

@@ -17,7 +17,7 @@ const styles = {
     height: '1em',
     fill: 'rgb(255, 87, 34)',
     opacity: .7,
-  }
+  },
 };
 
 function DeleteButton({ onDelete, isHovered }) {

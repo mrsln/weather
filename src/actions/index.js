@@ -26,6 +26,8 @@ const makePlacesApiUrl = (snippet, location) => `${PLACES_URL}?input=${encodeURI
 const MY_CITY_URL = 'http://cities-api.herokuapp.com/mycity';
 const makeMyCityApiUrl = (lat, lng) => `${MY_CITY_URL}?lat=${lat}&lng=${lng}`;
 
+let tries = 0;
+
 // add a city by a name
 export function addCity(city, id = uuid.v4()) {
   return dispatch => {
@@ -33,9 +35,11 @@ export function addCity(city, id = uuid.v4()) {
     return fetch(makeApiUrl(city))
       .then(response => {
         if (response.status >= 400) {
+          if (tries > 3) return;
           setTimeout( () => {
             dispatch(addCity(city));
-          } , 1000);
+            tries++;
+          }, 1000);
         }
         return response.json();
       })
@@ -49,9 +53,11 @@ export function addCityByLocation(lat, lng, name, id = uuid.v4()) {
     return fetch(makeGeoApiUrl(lat, lng))
       .then(response => {
         if (response.status >= 400) {
+          if (tries > 3) return;
           setTimeout( () => {
             dispatch(addCityByLocation(lat, lng, name));
-          } , 1000);
+            tries++;
+          }, 1000);
         }
         return response.json();
       })
@@ -79,9 +85,11 @@ export function addCityById(id, name, temperature = 0) {
 
         // have to repeat the request, because of the faulty API
         if (response.status >= 400) {
+          if (tries > 3) return;
           setTimeout( () => {
             dispatch(addCityById(id, name, temperature));
-          } , 1000);
+          }, 1000);
+          tries++;
         }
         return response.json();
       })
@@ -114,9 +122,11 @@ export function addMyCity(lat, lng) {
     return fetch(makeMyCityApiUrl(lat, lng))
       .then((response) => {
         if (response.status >= 400) {
+          if (tries > 3) return;
           setTimeout( () => {
             dispatch(addMyCity(lat, lng));
-          } , 1000);
+            tries++;
+          }, 1000);
         }
         return response.json();
       })

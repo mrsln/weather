@@ -38,6 +38,10 @@ const cardTarget = {
   isDragging: monitor.isDragging()
 }))
 export default class Tile extends Component {
+  
+  state = {
+    hasRendered: false,
+  };
 
   static propTypes = {
     city: React.PropTypes.shape({
@@ -134,6 +138,20 @@ export default class Tile extends Component {
     return this.renderCity();
   }
 
+  componentDidMount() {
+    window.requestAnimationFrame(() => {
+      this.setState({ hasRendered: true });
+    });
+  }
+
+  onDelete = () => {
+    this.setState({ hasRendered: false }, () => {
+      setTimeout(() => {
+        this.props.onDelete();
+      }, 300);
+    });
+  };
+
   render() {
     const {
       onDelete,
@@ -167,7 +185,7 @@ export default class Tile extends Component {
         borderRadius: 2,
         WebkitUserSelect: 'none',
         opacity: isDragging ? 0 : 1,
-        // order: i,
+        transition: 'opacity .3s',
       },
       content: {
         textAlign: 'center',
@@ -176,12 +194,15 @@ export default class Tile extends Component {
 
     let delBtn = null;
     if (typeof onDelete === 'function') {
-      delBtn = <DeleteButton onDelete={onDelete} />;
+      delBtn = <DeleteButton onDelete={ this.onDelete } />;
     }
 
     return connectDragSource(connectDropTarget(
       <div
-        style = {style.root}
+        style = {{
+          ...style.root,
+          opacity: this.state.hasRendered ? 1 : 0,
+        }}
         onMouseEnter = {this.onRootHover}
         onMouseLeave = {this.offRootHover}
       >
