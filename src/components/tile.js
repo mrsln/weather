@@ -38,11 +38,6 @@ const cardTarget = {
   isDragging: monitor.isDragging()
 }))
 export default class Tile extends Component {
-  
-  state = {
-    hasRendered: false,
-  };
-
   static propTypes = {
     city: React.PropTypes.shape({
       name: React.PropTypes.string,
@@ -138,18 +133,8 @@ export default class Tile extends Component {
     return this.renderCity();
   }
 
-  componentDidMount() {
-    window.requestAnimationFrame(() => {
-      this.setState({ hasRendered: true });
-    });
-  }
-
   onDelete = () => {
-    this.setState({ hasRendered: false }, () => {
-      setTimeout(() => {
-        this.props.onDelete();
-      }, 300);
-    });
+    this.props.onDelete();
   };
 
   render() {
@@ -197,21 +182,20 @@ export default class Tile extends Component {
       delBtn = <DeleteButton onDelete={ this.onDelete } />;
     }
 
+    const wrapperStyle = { display: 'flex', flex: '1 1 ' + w };
+
     return connectDragSource(connectDropTarget(
-      <div
-        style = {{
-          ...style.root,
-          opacity: this.state.hasRendered ? 1 : 0,
-        }}
-        onMouseEnter = {this.onRootHover}
-        onMouseLeave = {this.offRootHover}
-      >
-        <div style={style.content}>
-          { this.renderContent() }
+      <div style={ wrapperStyle }>
+        <div
+          style = { style.root }
+          onMouseEnter = { this.onRootHover }
+          onMouseLeave = { this.offRootHover }
+        >
+          <div style={style.content}>
+            { this.renderContent() }
+          </div>
+          { delBtn }
         </div>
-
-        {delBtn}
-
       </div>
     ));
   }

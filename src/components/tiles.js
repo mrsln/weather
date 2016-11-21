@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Tile from './tile';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import FlipMove from 'react-flip-move';
 
 @DragDropContext(HTML5Backend)
 export default class Tiles extends Component {
@@ -64,8 +65,14 @@ export default class Tiles extends Component {
     };
     
     return (
-      <div style={style.root}>
-        { tiles }
+      <div style={ style.root }>
+        <FlipMove
+          style={ style.root }
+          enterAnimation='fade'
+          leaveAnimation='fade'
+        >
+          { tiles }
+        </FlipMove>
       </div>
     );
   }
