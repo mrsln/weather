@@ -66,13 +66,7 @@ export default class Tiles extends Component {
     
     return (
       <div style={ style.root }>
-        <FlipMove
-          style={ style.root }
-          enterAnimation='fade'
-          leaveAnimation='fade'
-        >
-          { tiles }
-        </FlipMove>
+        { tiles }
       </div>
     );
   }
